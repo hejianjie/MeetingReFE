@@ -22,12 +22,12 @@
         align="center"
         width="50">
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="roomId"
         header-align="center"
         align="center"
         label="唯一标识">
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         prop="roomName"
         header-align="center"
@@ -58,7 +58,7 @@
         align="center"
         label="容纳人数">
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="roomLeader"
         header-align="center"
         align="center"
@@ -81,7 +81,7 @@
         header-align="center"
         align="center"
         label="预留字段2">
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         fixed="right"
         header-align="center"

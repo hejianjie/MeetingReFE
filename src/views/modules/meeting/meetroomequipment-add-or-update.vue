@@ -10,12 +10,12 @@
     <el-form-item label="设备信息" prop="message">
       <el-input v-model="dataForm.message" placeholder="设备信息"></el-input>
     </el-form-item>
-    <el-form-item label="预留字段1" prop="data1">
+    <!-- <el-form-item label="预留字段1" prop="data1">
       <el-input v-model="dataForm.data1" placeholder="预留字段1"></el-input>
     </el-form-item>
     <el-form-item label="预留字段2" prop="data2">
       <el-input v-model="dataForm.data2" placeholder="预留字段2"></el-input>
-    </el-form-item>
+    </el-form-item> -->
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>

@@ -3,7 +3,7 @@
     :title="!dataForm.id ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible">
-    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
+    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="120px">
     <el-form-item label="会议室" prop="roomName">
       <el-input v-model="dataForm.roomName" placeholder="会议室"></el-input>
     </el-form-item>
@@ -19,7 +19,7 @@
     <el-form-item label="容纳人数" prop="capacity">
       <el-input v-model="dataForm.capacity" placeholder="容纳人数"></el-input>
     </el-form-item>
-    <el-form-item label="会议室负责人" prop="roomLeader">
+    <!-- <el-form-item label="会议室负责人" prop="roomLeader">
       <el-input v-model="dataForm.roomLeader" placeholder="会议室负责人"></el-input>
     </el-form-item>
     <el-form-item label="负责人联系方式" prop="roomPhone">
@@ -30,7 +30,7 @@
     </el-form-item>
     <el-form-item label="预留字段2" prop="data2">
       <el-input v-model="dataForm.data2" placeholder="预留字段2"></el-input>
-    </el-form-item>
+    </el-form-item> -->
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>

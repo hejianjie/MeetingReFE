@@ -22,23 +22,23 @@
         align="center"
         width="50">
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="id"
         header-align="center"
         align="center"
         label="唯一标识">
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         prop="department"
         header-align="center"
         align="center"
-        label="使用单位（例:软件学院）">
+        label="使用单位">
       </el-table-column>
       <el-table-column
         prop="roomUser"
         header-align="center"
         align="center"
-        label="会议室预约人">
+        label="预约人">
       </el-table-column>
       <el-table-column
         prop="userFrom"
@@ -62,7 +62,7 @@
         prop="userPhone"
         header-align="center"
         align="center"
-        label="预约人联系方式">
+        label="联系方式">
       </el-table-column>
       <el-table-column
         prop="date"
@@ -74,13 +74,13 @@
         prop="startTime"
         header-align="center"
         align="center"
-        label="会议开始时间">
+        label="开始时间">
       </el-table-column>
       <el-table-column
         prop="endTime"
         header-align="center"
         align="center"
-        label="会议结束时间">
+        label="结束时间">
       </el-table-column>
       <el-table-column
         prop="userNum"
@@ -112,7 +112,7 @@
         align="center"
         label="预约状态">
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="data1"
         header-align="center"
         align="center"
@@ -123,7 +123,7 @@
         header-align="center"
         align="center"
         label="预留字段2">
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         fixed="right"
         header-align="center"
@@ -131,7 +131,7 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
+          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">详情</el-button>
           <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>

@@ -22,12 +22,12 @@
         align="center"
         width="50">
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="id"
         header-align="center"
         align="center"
         label="唯一标识">
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         prop="name"
         header-align="center"
@@ -40,7 +40,7 @@
         align="center"
         label="设备信息">
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="data1"
         header-align="center"
         align="center"
@@ -51,7 +51,7 @@
         header-align="center"
         align="center"
         label="预留字段2">
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         fixed="right"
         header-align="center"
