@@ -24,7 +24,7 @@
           <el-table-column prop="date" min-width="110"> </el-table-column>
           <el-table-column
             v-for="(item, index) in room"
-             prop="'item.roomName'"
+            :prop="item.roomName"
             :key="index"
             :label="item.roomName"
             width="100"
@@ -44,7 +44,7 @@
               <el-button
                 type="text"
                 :class="
-                  item.equipment == '标准'
+                  item.equipment != '标准'
                     ? 'iconfont icon-shexiangtou'
                     : 'iconfont icon-shexiangtou_guanbi'
                 "
@@ -90,7 +90,6 @@
             <el-input
               readonly
               v-model="form.room"
-              placeholder="点击左侧进行选择"
             ></el-input>
           </el-form-item>
           <el-form-item label="活动日期">
@@ -167,6 +166,18 @@ export default {
     this.getTanleMsg();
   },
   methods: {
+    getNowTime() {
+      var now = new Date();
+      var year = now.getFullYear(); //得到年份
+      var month = now.getMonth(); //得到月份
+      var date = now.getDate(); //得到日期
+      month = month + 1;
+      month = month.toString().padStart(2, "0");
+      date = date.toString().padStart(2, "0");
+      var defaultDate = `${year}-${month}-${date}`;
+      // var defaultDate = '2020-09-24';
+      this.datevalue = defaultDate;
+    },
     getTanleMsg() {
       this.$http({
         url: this.$http.adornUrl("/meeting/meet/table"),
@@ -189,7 +200,7 @@ export default {
           // console.log();
           this.form = {
             department: data.room[1].roomArea,
-            name: data.now_user.username,
+            name: data.now_user.user_no,
             mobile: data.now_user.mobile,
             belong: data.now_user.department,
             datechoose: this.datevalue,
@@ -273,18 +284,6 @@ export default {
       console.log("this.bechosed");
       console.log(this.bechosed);
     },
-    getNowTime() {
-      var now = new Date();
-      var year = now.getFullYear(); //得到年份
-      var month = now.getMonth(); //得到月份
-      var date = now.getDate(); //得到日期
-      month = month + 1;
-      month = month.toString().padStart(2, "0");
-      date = date.toString().padStart(2, "0");
-      var defaultDate = `${year}-${month}-${date}`;
-      // var defaultDate = '2020-09-24';
-      this.datevalue = defaultDate;
-    },
 
     resetchose() {
       this.timesign = false;
@@ -294,28 +293,20 @@ export default {
       this.bechosed = false;
     },
     reset() {
-      console.log("重置时间");
+      console.log("重置事件");
       this.$router.go(0);
     },
     // 单元格的 style 的回调方法
     cellStyle({ row, column, rowIndex, columnIndex }) {
       //初始渲染已选择
-      for (let i = 0; i < this.choosetable.length; i++) {
-        let a = this.choosetable[i].chose.split("_");
-        if (
-          column.label == a[0] &&
-          rowIndex >= a[1] - 7 &&
-          rowIndex <= a[2] - 8
-        ) {
+      try {
+        if (typeof row[column.label]["id"] != "undefined") {
           return "border-radius: 8px;background-color:#909399;color:white;padding:0";
         }
-      }
+      } catch (error) {}
 
       //点击选择
-      console.log(this.timestart);
-      //console.log(rowIndex);
       if (columnIndex != 0 && this.timesign == true) {
-        this.context();
         if (
           this.timeend != "" &&
           column.label == this.roomsign &&
@@ -323,73 +314,72 @@ export default {
           rowIndex <= Number(this.timeend - 8) &&
           this.bechosed == true
         ) {
-          console.log("进入if");
-          this.context();
-          return "border-radius: 8px;background-color:#409EFF;color:white;padding:0";
+          //跨区域选择
+          return "border-radius: 8px;background-color:#3E8EF7;color:white;padding:0";
         }
 
         if (
           column.label == this.roomsign &&
           rowIndex == Number(this.timestart - 7)
         ) {
-          console.log("进入else");
-          this.context();
-          return "border-radius: 8px;background-color:#409EFF;color:white;padding:0";
+          //单选
+          return "border-radius: 8px;background-color:#3E8EF7;color:white;padding:0";
         }
       }
+
       if (columnIndex != 0)
-        return "border-radius: 8px;background-color:rgb(0, 215, 193);padding:0";
+        return "border-radius: 8px;background-color:rgb(33, 185, 251);padding:0";
     },
     clickhandle(row, column, event, cell) {
       let a = row.date.split("-");
-      console.log("点击事件");
-      // console.log(row.column1.roomId);
-      console.log("行");
-      console.log(row);
-      console.log("列");
-      console.log(column);
-      console.log("====");
+      // console.log("点击事件");
+      // console.log(row[column.label]);
+      // console.log("行");
+      // console.log(row);
+      // console.log("列");
+      // console.log(column);
+      // console.log("====");
+
+      // 获取选择的会议室
+      let chooseroom;
       for (let i = 0; i < this.room.length; i++)
-        if (this.room[i].roomName == column.label)
-          this.roomsize = this.room[i].capacity;
+        if (this.room[i].roomName == column.label) chooseroom = this.room[i];
+
+      // 获取选择的会议室人数判断上限
+      this.roomsize = chooseroom.capacity;
+
       if (this.timesign == false) {
-        this.form.room = column.label;
-        this.roomsign = column.label;
-        this.form.date1 = a[0];
-        this.timestart = a[0].split(":")[0];
-        this.timeend = "";
-        this.form.date2 = a[1];
-        this.timesign = true;
-        // this.context();
-        // console.log(this.timestart);
+        //第一次点击
+        if (typeof row[column.label]["id"] != "undefined") {
+          this.$message.error("当前时间段已被预约");
+          this.resetchose();
+        } else {
+          this.form.room = column.label;
+          this.roomsign = column.label;
+          this.form.date1 = a[0];
+          this.timestart = a[0].split(":")[0];
+          this.timeend = "";
+          this.form.date2 = a[1];
+          this.timesign = true;
+        }
       } else {
+        //第二次点击
         if (this.form.room == column.label) {
-          for (let i = 0; i < this.choosetable.length; i++) {
-            let c = this.choosetable[i].chose.split("_");
-            if (c[0] == column.label) {
-              // console.log("c[1]" + i);
-              // console.log(c[1]);
-              // console.log(this.timestart);
-              // console.log(a[0].split(":")[0]);
-              if (
-                Number(c[1]) > Number(this.timestart) &&
-                Number(c[1]) < Number(a[0].split(":")[0])
-              ) {
-                this.$message.error("当前时间段已有被预约时间段");
-                // console.log("before" + i);
-                // this.context();
-                this.resetchose();
-                // console.log("after" + i);
-                // this.context();
-                break;
-              }
+          //仍选择该会议室
+          let tstart = Number(this.timestart);
+          let tend = Number(a[0].split(":")[0]);
+
+          //判断选择时间段内部有无已选
+          for (let i = tstart; i <= tend; i++) {
+            if (typeof this.tableData[i - 7][column.label]["id"] != "undefined") {
+              this.$message.error("当前时间段已有被预约时间段");
+              this.resetchose();
+              break;
             }
           }
 
           if (Number(a[0].split(":")[0]) <= Number(this.timestart)) {
-            // console.log("请选择正确的时间段");
-            // console.log(a[0].split(":")[0]);
-            // this.context();
+             //判断第二次时间是否在第一次前面
             this.$message.error("请选择正确的时间段");
             this.resetchose();
           } else {
@@ -436,10 +426,10 @@ export default {
       timestart: "",
       datasign: [],
       choosetable: {},
-      timesign: false,
+      timesign: false, //第几次点击
       timestart: "",
       timeend: "",
-      roomsign: "",
+      roomsign: "", //标记点击选择的会议室
       bechosed: false,
       rules: {
         room: [{ required: true, message: "请填写会议室", trigger: "change" }],

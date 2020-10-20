@@ -40,23 +40,17 @@
         align="center"
         label="预约人">
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="userFrom"
         header-align="center"
         align="center"
         label="预约人隶属部门">
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         prop="roomName"
         header-align="center"
         align="center"
         label="会议室名称">
-      </el-table-column>
-      <el-table-column
-        prop="equipment"
-        header-align="center"
-        align="center"
-        label="设备">
       </el-table-column>
       <el-table-column
         prop="userPhone"
@@ -82,7 +76,13 @@
         align="center"
         label="结束时间">
       </el-table-column>
-      <el-table-column
+           <el-table-column
+        prop="equipment"
+        header-align="center"
+        align="center"
+        label="设备">
+      </el-table-column>
+      <!-- <el-table-column
         prop="userNum"
         header-align="center"
         align="center"
@@ -111,7 +111,7 @@
         header-align="center"
         align="center"
         label="预约状态">
-      </el-table-column>
+      </el-table-column> -->
       <!-- <el-table-column
         prop="data1"
         header-align="center"
