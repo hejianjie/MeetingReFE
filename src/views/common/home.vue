@@ -87,10 +87,7 @@
             <el-input readonly v-model="form.belong"></el-input>
           </el-form-item>
           <el-form-item label="会议室" prop="room">
-            <el-input
-              readonly
-              v-model="form.room"
-            ></el-input>
+            <el-input readonly v-model="form.room"></el-input>
           </el-form-item>
           <el-form-item label="活动日期">
             <el-col :span="11">
@@ -198,9 +195,9 @@ export default {
           // this.tableData = data.list;
 
           // console.log();
-          this.form = {
+          this.formcache = {
             department: data.room[1].roomArea,
-            name: data.now_user.user_no,
+            name: data.now_user.thename,
             mobile: data.now_user.mobile,
             belong: data.now_user.department,
             datechoose: this.datevalue,
@@ -209,6 +206,7 @@ export default {
             date2: null,
             room: null,
           };
+          this.form = this.formcache;
         } else {
           this.$message.error(data.msg);
         }
@@ -294,7 +292,9 @@ export default {
     },
     reset() {
       console.log("重置事件");
-      this.$router.go(0);
+      resetchose();
+      this.form = this.formcache;
+      // this.$router.go(0);
     },
     // 单元格的 style 的回调方法
     cellStyle({ row, column, rowIndex, columnIndex }) {
@@ -371,7 +371,9 @@ export default {
 
           //判断选择时间段内部有无已选
           for (let i = tstart; i <= tend; i++) {
-            if (typeof this.tableData[i - 7][column.label]["id"] != "undefined") {
+            if (
+              typeof this.tableData[i - 7][column.label]["id"] != "undefined"
+            ) {
               this.$message.error("当前时间段已有被预约时间段");
               this.resetchose();
               break;
@@ -379,7 +381,7 @@ export default {
           }
 
           if (Number(a[0].split(":")[0]) <= Number(this.timestart)) {
-             //判断第二次时间是否在第一次前面
+            //判断第二次时间是否在第一次前面
             this.$message.error("请选择正确的时间段");
             this.resetchose();
           } else {
@@ -422,6 +424,7 @@ export default {
       room: [],
       roomsize: "",
       form: {},
+      formcache: {},
       datevalue: "",
       timestart: "",
       datasign: [],

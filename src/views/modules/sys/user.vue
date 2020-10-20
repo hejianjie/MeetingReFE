@@ -33,13 +33,13 @@
         prop="username"
         header-align="center"
         align="center"
-        label="用户名">
+        label="账户">
       </el-table-column>
       <el-table-column
-        prop="email"
+        prop="department"
         header-align="center"
         align="center"
-        label="邮箱">
+        label="所属部门">
       </el-table-column>
       <el-table-column
         prop="mobile"
