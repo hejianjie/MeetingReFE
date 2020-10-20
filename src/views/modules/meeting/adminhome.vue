@@ -62,7 +62,7 @@
         </el-table>
       </el-col>
       <el-col :span="8">
-        <el-form ref="form" :rules="rules" :model="form" label-width="80px">
+        <!-- <el-form ref="form" :rules="rules" :model="form" label-width="80px">
           <el-form-item
             label="提交会议室预约申请"
             label-width="180px"
@@ -148,7 +148,7 @@
             >
             <el-button @click="reset">重置</el-button>
           </el-form-item>
-        </el-form>
+        </el-form> -->
       </el-col>
     </el-row>
   </div>
