@@ -26,30 +26,30 @@
             width="100">
             <!-- 预约详情弹出框 -->
             <template slot-scope="scope">
-              <el-popover trigger="hover" placement="right">
+              <el-popover trigger="hover" placement="left">
                 <el-form ref="form" :model="details" label-width="80px">
                   <el-form-item label="使用单位">
-                    <el-input v-model="details.department"></el-input>
+                    <el-input v-model="details.department" readonly></el-input>
                   </el-form-item>
                   <el-form-item label="预约人">
-                    <el-input v-model="details.roomUser"></el-input>
+                    <el-input v-model="details.roomUser" readonly></el-input>
                   </el-form-item>
                   <el-form-item label="联系方式">
-                    <el-input v-model="details.userPhone"></el-input>
+                    <el-input v-model="details.userPhone" readonly></el-input>
                   </el-form-item>
                   <el-form-item label="会议主题">
-                    <el-input v-model="details.meetingTheme"></el-input>
+                    <el-input v-model="details.meetingTheme" readonly></el-input>
                   </el-form-item>
                   <el-form-item label="参会人员">
-                    <el-input v-model="details.users"></el-input>
+                    <el-input v-model="details.users" readonly></el-input>
                   </el-form-item>
                   <el-form-item label="备注">
                     <template>
                       <el-form-item v-if="details.remark==null">
-                        <el-input value="无"></el-input>
+                        <el-input value="无" readonly></el-input>
                       </el-form-item>
                       <el-form-item v-else>
-                        <el-input v-model="details.remark"></el-input>
+                        <el-input v-model="details.remark" readonly></el-input>
                       </el-form-item>
                     </template>
                   </el-form-item>
@@ -240,9 +240,17 @@ export default {
     // 单元格的 style 的回调方法
     cellStyle({ row, column, rowIndex, columnIndex }) {
       //初始渲染已选择
-      try {
+       try {
         if (typeof row[column.label]["id"] != "undefined") {
-          return "border-radius: 8px;background-color:#909399;color:white;padding:0";
+          if (row[column.label]["startTime"] === row["date"].split(":")[0])
+            return "border-radius: 8px;background-color:#909399;color:white;padding:0;border-top: 2px solid #475364";
+          else if (
+            row[column.label]["endTime"] ===
+            row["date"].split(":")[1].split("-")[1]
+          )
+            return "border-radius: 8px;background-color:#909399;color:white;padding:0;border-bottom: 2px solid #475364";
+          else
+            return "border-radius: 8px;background-color:#909399;color:white;padding:0";
         }
       } catch (error) {}
 

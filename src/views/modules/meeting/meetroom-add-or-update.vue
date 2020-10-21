@@ -11,8 +11,8 @@
       @keyup.enter.native="dataFormSubmit()"
       label-width="120px"
     >
-      <el-form-item label="会议室" prop="roomName">
-        <el-input v-model="dataForm.roomName" placeholder="会议室"></el-input>
+      <el-form-item label="会议室名称" prop="roomName">
+        <el-input v-model="dataForm.roomName" placeholder="会议室名称"></el-input>
       </el-form-item>
       <el-form-item label="所属区域" prop="roomArea">
         <el-input v-model="dataForm.roomArea" placeholder="所属区域"></el-input>
@@ -26,7 +26,7 @@
       <!-- <el-form-item label="设备" prop="equipment">
         <el-input v-model="dataForm.equipment" placeholder="设备"></el-input>
       </el-form-item> -->
-      <el-form-item label="拥有设备" size="mini" prop="equipment">
+      <el-form-item label="设备" size="mini" prop="equipment">
         <el-checkbox-group v-model="dataForm.equipment">
           <el-checkbox v-for="eq in eqList" :key="eq.id" :label="eq.name">{{
             eq.name
@@ -80,7 +80,7 @@ export default {
       },
       dataRule: {
         roomName: [
-          { required: true, message: "会议室不能为空", trigger: "blur" },
+          { required: true, message: "会议室名称不能为空", trigger: "blur" },
         ],
         roomArea: [
           { required: true, message: "所属区域不能为空", trigger: "blur" },

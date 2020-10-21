@@ -248,6 +248,9 @@ export default {
         }),
       }).then(({ data }) => {
         if (data && data.code === 0) {
+          console.log("data.page.list");
+          console.log(data.page.list);
+          console.log(data.page.list[0]);
           this.dataList = data.page.list;
           this.dataList.reverse();
           for (let i = 0; i < this.dataList.length; i ++) {

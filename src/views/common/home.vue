@@ -33,31 +33,50 @@
             width="100"
           >
             <template slot-scope="scope">
-              <el-button
-                type="text"
-                style="
-                  float: left;
-                  font-size: 18px;
-                  margin-left: 10%;
-                  color: white;
-                  line-height: 25px;
-                "
-                >{{ item.capacity }}</el-button
-              >
-              <el-button
-                type="text"
-                :class="
-                  item.equipment != '无'
-                    ? 'iconfont icon-shexiangtou'
-                    : 'iconfont icon-shexiangtou_guanbi'
-                "
-                style="
-                  float: right;
-                  font-size: 25px;
-                  margin-right: 10%;
-                  color: #686868;
-                "
-              ></el-button>
+              <!-- <el-popover trigger="hover" placement="right">
+                <el-form ref="form" :model="details" label-width="100px">
+                  <el-form-item label="会议室名称">
+                    <el-input v-model="details.roomName" readonly></el-input>
+                  </el-form-item>
+                  <el-form-item label="所属区域">
+                    <el-input v-model="details.roomArea" readonly></el-input>
+                  </el-form-item>
+                  <el-form-item label="会议室地点">
+                    <el-input v-model="details.location" readonly></el-input>
+                  </el-form-item>
+                  <el-form-item label="设备">
+                    <el-input v-model="details.equipment" readonly></el-input>
+                  </el-form-item>
+                  <el-form-item label="容纳人数">
+                    <el-input v-model="details.capacity" readonly></el-input>
+                  </el-form-item>
+                </el-form>
+               </el-popover> -->
+                  <el-button
+                    type="text"
+                    style="
+                      float: left;
+                      font-size: 18px;
+                      margin-left: 10%;
+                      color: white;
+                      line-height: 25px;
+                    "
+                    >{{ item.capacity }}</el-button
+                  >
+                  <el-button
+                    type="text"
+                    :class="
+                      item.equipment != '无'
+                        ? 'iconfont icon-shexiangtou'
+                        : 'iconfont icon-shexiangtou_guanbi'
+                    "
+                    style="
+                      float: right;
+                      font-size: 25px;
+                      margin-right: 10%;
+                      color: #686868;
+                    "
+                  ></el-button>    
             </template>
             <!-- <span style="float:left" class="iconfont icon-mic"></span>
             <span  style="float:right" class="iconfonticon-shexiangtou_guanbi"></span>-->
@@ -144,7 +163,7 @@
               ></el-input>
             </el-col>
           </el-form-item>
-          <el-form-item label="参会领导" prop="leader">
+          <el-form-item label="参会人员" prop="leader">
             <el-input v-model="form.leader"></el-input>
           </el-form-item>
 
@@ -185,11 +204,19 @@ export default {
     this.getTanleMsg();
   },
   methods: {
+    //获取会议室详情信息
+    // getDetails(row, column, cell, event) {
+    //   this.details = {};
+    //   for (let i = 0; i < this.room.length; i++) {
+    //     if (this.room[i].roomName == column.label) {
+    //       this.details = this.room[i];
+    //     }
+    //   }
+    // },
     getNowTime() {
       var now = new Date();
       let hourchecksign = 0; //0今天 1下一天
       var hour = now.getHours(); //得到小时
-
       if (hour >= 20) {
         this.hourvalue = 0;
         hourchecksign = 1;
@@ -204,8 +231,10 @@ export default {
       var defaultDate = `${year}-${month}-${date}`;
       // var defaultDate = '2020-09-24';
       this.datevalue = defaultDate;
-
-      if (hourchecksign != 1) this.hourvalue = hour;
+      console.log("this.datevalue");
+      console.log(this.datevalue);
+      if (hourchecksign == 0)
+       this.hourvalue = hour;
 
       this.expireTimeOption = {
         disabledDate(date) {
@@ -213,6 +242,7 @@ export default {
           return date.getTime() < now.getTime() - 24 * 60 * 60 * 1000;
         },
       };
+      console.log("this.hourvalue");
       console.log(this.hourvalue);
     },
     geteqlist() {
@@ -244,6 +274,7 @@ export default {
         },
       }).then(({ data }) => {
         if (data && data.code === 0) {
+          console.log("data");
           console.log(data);
           this.tableData = data.table;
           this.room = data.room;
@@ -410,13 +441,14 @@ export default {
         return "border-radius: 8px;background-color:rgb(33, 185, 251);padding:0";
     },
     clickhandle(row, column, event, cell) {
+      this.getNowTime();
       if (column.property != "date") {
         let a = row.date.split("-");
         // console.log("点击事件");
         // console.log(row[column.label]);
-        // console.log("行");
+        console.log("行");
         console.log(row);
-        // console.log("列");
+        console.log("列");
         console.log(column);
         // console.log("====");
 
@@ -430,11 +462,13 @@ export default {
 
         if (this.timesign == false) {
           //第一次点击
+          console.log("row[column.label]");
+          console.log(row[column.label]);
           if (typeof row[column.label]["id"] != "undefined") {
             this.$message.error("当前时间段已被预约");
             this.resetchose();
           } else if (Number(row.date.split(":")[0]) <= Number(this.hourvalue)) {
-            this.$message.error("当前时间段已过，无法预约");
+            this.$message.error("当前时间段已过，无法预约");         
             this.resetchose();
           } else {
             this.form.room = column.label;
@@ -517,6 +551,7 @@ export default {
       now_user: {},
       eqList: [],
       roomsize: "",
+      // details: {},
       form: {},
       formcache: {},
       datevalue: "",

@@ -32,7 +32,7 @@
         prop="roomName"
         header-align="center"
         align="center"
-        label="会议室">
+        label="会议室名称">
       </el-table-column>
       <el-table-column
         prop="roomArea"
