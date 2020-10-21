@@ -16,7 +16,6 @@
           :cell-style="cellStyle"
           border
           @cell-mouse-enter="clickhandle"
-          @cell-mouse-leave="close"
           style="width: 95%">
           <el-table-column prop="date" min-width="110"> </el-table-column>
           <el-table-column
@@ -25,32 +24,64 @@
             :key="index"
             :label="item.roomName"
             width="100">
+            <!-- 预约详情弹出框 -->
             <template slot-scope="scope">
-              <el-button
-                type="text"
-                style="
-                  float: left;
-                  font-size: 18px;
-                  margin-left: 10%;
-                  color: white;
-                  line-height: 25px;
-                "
-                >{{ item.capacity }}</el-button
-              >
-              <el-button
-                type="text"
-                :class="
-                  item.equipment != '无'
-                    ? 'iconfont icon-shexiangtou'
-                    : 'iconfont icon-shexiangtou_guanbi'
-                "
-                style="
-                  float: right;
-                  font-size: 25px;
-                  margin-right: 10%;
-                  color: #686868;
-                "
-              ></el-button>
+              <el-popover trigger="hover" placement="right">
+                <el-form ref="form" :model="details" label-width="80px">
+                  <el-form-item label="使用单位">
+                    <el-input v-model="details.department"></el-input>
+                  </el-form-item>
+                  <el-form-item label="预约人">
+                    <el-input v-model="details.roomUser"></el-input>
+                  </el-form-item>
+                  <el-form-item label="联系方式">
+                    <el-input v-model="details.userPhone"></el-input>
+                  </el-form-item>
+                  <el-form-item label="会议主题">
+                    <el-input v-model="details.meetingTheme"></el-input>
+                  </el-form-item>
+                  <el-form-item label="参会人员">
+                    <el-input v-model="details.users"></el-input>
+                  </el-form-item>
+                  <el-form-item label="备注">
+                    <template>
+                      <el-form-item v-if="details.remark==null">
+                        <el-input value="无"></el-input>
+                      </el-form-item>
+                      <el-form-item v-else>
+                        <el-input v-model="details.remark"></el-input>
+                      </el-form-item>
+                    </template>
+                  </el-form-item>
+                </el-form>
+                <div slot="reference">
+                  <el-button
+                    type="text"
+                    style="
+                      float: left;
+                      font-size: 18px;
+                      margin-left: 10%;
+                      color: white;
+                      line-height: 25px;
+                    "
+                    >{{ item.capacity }}</el-button
+                  >
+                  <el-button
+                    type="text"
+                    :class="
+                      item.equipment != '无'
+                        ? 'iconfont icon-shexiangtou'
+                        : 'iconfont icon-shexiangtou_guanbi'
+                    "
+                    style="
+                      float: right;
+                      font-size: 25px;
+                      margin-right: 10%;
+                      color: #686868;
+                    "
+                  ></el-button>
+                </div>
+              </el-popover>
             </template>
             <!-- <span style="float:left" class="iconfont icon-mic"></span>
             <span  style="float:right" class="iconfonticon-shexiangtou_guanbi"></span>-->
@@ -241,6 +272,7 @@ export default {
         return "border-radius: 8px;background-color:rgb(33, 185, 251);padding:0";
     },
     close () {
+      
       this.details = {};
     },
     clickhandle(row, column, event, cell) {
@@ -250,6 +282,8 @@ export default {
       //   if (this.room[i].roomName == column.label) chooseroom = this.room[i];
       console.log("row[column.label]");
       console.log(row[column.label]);
+      
+      this.details = {};
       if (typeof row[column.label]["id"] != "undefined") {
         this.details = {
           department: row[column.label].department,
@@ -266,7 +300,10 @@ export default {
         };
         console.log("详情");
         console.log(this.details);
+      } else {
+        this.visible = false;
       }
+
       // for(let i = 0; i < b.length; i++){
       //   let time1 = b[i].item.startTime.split(' ');//开始时间
       //   let time2 = b[i].item.endTime.split(' ');//结束时间
@@ -397,6 +434,7 @@ export default {
       timeend: "",
       roomsign: "", //标记点击选择的会议室
       bechosed: false,
+      visible: false,//详情弹出框是否显示
       rules: {
         room: [{ required: true, message: "请填写会议室", trigger: "change" }],
         sum: [{ validator: validateSum, trigger: "blur" }],
