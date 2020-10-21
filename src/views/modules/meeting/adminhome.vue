@@ -1,5 +1,3 @@
-
-
 <template>
   <div>
     <el-row>
@@ -9,8 +7,7 @@
           type="date"
           @change="getTanleMsg"
           placeholder="选择日期"
-          value-format="yyyy-MM-dd"
-        >
+          value-format="yyyy-MM-dd">
           <!-- :picker-options="expireTimeOption" -->
         </el-date-picker>
         <el-table
@@ -18,17 +15,16 @@
           :data="tableData"
           :cell-style="cellStyle"
           border
-          @cell-click="clickhandle"
-          style="width: 95%"
-        >
+          @cell-mouse-enter="clickhandle"
+          @cell-mouse-leave="close"
+          style="width: 95%">
           <el-table-column prop="date" min-width="110"> </el-table-column>
           <el-table-column
             v-for="(item, index) in room"
             :prop="item.roomName"
             :key="index"
             :label="item.roomName"
-            width="100"
-          >
+            width="100">
             <template slot-scope="scope">
               <el-button
                 type="text"
@@ -61,95 +57,9 @@
           </el-table-column>
         </el-table>
       </el-col>
-      <el-col :span="8">
-        <!-- <el-form ref="form" :rules="rules" :model="form" label-width="80px">
-          <el-form-item
-            label="提交会议室预约申请"
-            label-width="180px"
-            style="text-align: left; font-weight: 600; font-size: 14px"
-          >
-          </el-form-item>
-          <el-form-item label="使用单位">
-            <el-input v-model="form.department" readonly></el-input>
-          </el-form-item>
-          <el-form-item label="联系人">
-            <el-input v-model="form.name" readonly></el-input>
-          </el-form-item>
-          <el-form-item label="联系电话">
-            <el-input
-              type="number"
-              readonly
-              v-model="form.mobile"
-              @mousewheel.native.prevent
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="隶属单位">
-            <el-input readonly v-model="form.belong"></el-input>
-          </el-form-item>
-          <el-form-item label="会议室" prop="room">
-            <el-input readonly v-model="form.room"></el-input>
-          </el-form-item>
-          <el-form-item label="活动日期">
-            <el-col :span="11">
-              <el-input v-model="form.datechoose"></el-input>
-            </el-col>
-          </el-form-item>
-          <el-form-item label="活动时间">
-            <el-col :span="11">
-              <el-input
-                readonly
-                placeholder="开始时间"
-                v-model="form.date1"
-                style="width: 100%"
-              ></el-input>
-            </el-col>
-            <el-col class="line" :span="2" style="text-align: center">-</el-col>
-            <el-col :span="11">
-              <el-input
-                readonly
-                placeholder="结束时间"
-                v-model="form.date2"
-                style="width: 100%"
-              ></el-input>
-            </el-col>
-          </el-form-item>
-          <el-form-item label="参会人数" prop="sum">
-            <el-col :span="11">
-              <el-input
-                type="number"
-                min="2"
-                max="100"
-                v-model="form.sum"
-              ></el-input>
-            </el-col>
-          </el-form-item>
-          <el-form-item label="参会领导" prop="leader">
-            <el-input v-model="form.leader"></el-input>
-          </el-form-item>
-
-          <el-form-item label="会议用途" prop="theme">
-            <el-checkbox-group v-model="form.theme" @change="selectedChange">
-              <el-checkbox label="研讨会" name="type"></el-checkbox>
-              <el-checkbox label="培训" name="type"></el-checkbox>
-              <el-checkbox label="讲座" name="type"></el-checkbox>
-              <el-checkbox
-                label="其他（建议备注中说明）"
-                name="type"
-              ></el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-
-          <el-form-item label="备注">
-            <el-input type="textarea" v-model="form.note"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="submitForm('form')"
-              >立即预约</el-button
-            >
-            <el-button @click="reset">重置</el-button>
-          </el-form-item>
-        </el-form> -->
-      </el-col>
+      <!-- <el-col :span="8">
+        
+      </el-col> -->
     </el-row>
   </div>
 </template>
@@ -330,8 +240,66 @@ export default {
       if (columnIndex != 0)
         return "border-radius: 8px;background-color:rgb(33, 185, 251);padding:0";
     },
+    close () {
+      this.details = {};
+    },
     clickhandle(row, column, event, cell) {
-      let a = row.date.split("-");
+      // 获取选择的会议室
+      // let chooseroom;
+      // for (let i = 0; i < this.room.length; i++)
+      //   if (this.room[i].roomName == column.label) chooseroom = this.room[i];
+      console.log("row[column.label]");
+      console.log(row[column.label]);
+      if (typeof row[column.label]["id"] != "undefined") {
+        this.details = {
+          department: row[column.label].department,
+          roomUser: row[column.label].roomUser,
+          userNum: row[column.label].userNum,
+          userFrom: row[column.label].userFrom,
+          roomName: row[column.label].roomName,
+          equipment: row[column.label].equipment,
+          userPhone: row[column.label].userPhone,
+          meetingTheme: row[column.label].meetingTheme,
+          users: row[column.label].users,
+          remark: row[column.label].remark,
+          time: row[column.label].startTime + ":00-" + row[column.label].endTime + ":00",       
+        };
+        console.log("详情");
+        console.log(this.details);
+      }
+      // for(let i = 0; i < b.length; i++){
+      //   let time1 = b[i].item.startTime.split(' ');//开始时间
+      //   let time2 = b[i].item.endTime.split(' ');//结束时间
+      //   if(
+      //     b[i].item.roomName == column.label &&
+      //     time1[0] == this.datevalue){
+      //     if(
+      //       a[0].split(":")[0] >= Number(time1[1].split(':')[0]) && 
+      //       a[1].split(":")[0] <= Number(time2[1].split(':')[0])
+      //     ){ 
+      //       console.log(a[0].split(":")[0]);
+      //       console.log(Number(time1[1].split(':')[0]));
+      //       console.log(a[1].split(":")[0]);
+      //       console.log(Number(time2[1].split(':')[0]));
+      //       this.details = {
+      //         department: b[i].item.department,
+      //         headCount: b[i].item.headCount,
+      //         leader: b[i].item.leader,
+      //         meetingTheme: b[i].item.meetingTheme,
+      //         remark: b[i].item.remark,
+      //         roomName: b[i].item.roomName,
+      //         roomUser: b[i].item.roomUser,
+      //         startTime: b[i].item.startTime,
+      //         endTime: b[i].item.endTime,
+      //         remark: b[i].item.remark,
+      //         mobile: b[i].mobile,
+      //       };
+      //       this.visible = true;
+      //       console.log("我进来了");
+      //       console.log(this.details);
+      //     }
+      //   }
+      
       // console.log("点击事件");
       // console.log(row[column.label]);
       // console.log("行");
@@ -339,62 +307,56 @@ export default {
       // console.log("列");
       // console.log(column);
       // console.log("====");
-
-      // 获取选择的会议室
-      let chooseroom;
-      for (let i = 0; i < this.room.length; i++)
-        if (this.room[i].roomName == column.label) chooseroom = this.room[i];
-
       // 获取选择的会议室人数判断上限
-      this.roomsize = chooseroom.capacity;
+      // this.roomsize = chooseroom.capacity;
 
-      if (this.timesign == false) {
-        //第一次点击
-        if (typeof row[column.label]["id"] != "undefined") {
-          this.$message.error("当前时间段已被预约");
-          this.resetchose();
-        } else {
-          this.form.room = column.label;
-          this.roomsign = column.label;
-          this.form.date1 = a[0];
-          this.timestart = a[0].split(":")[0];
-          this.timeend = "";
-          this.form.date2 = a[1];
-          this.timesign = true;
-        }
-      } else {
-        //第二次点击
-        if (this.form.room == column.label) {
-          //仍选择该会议室
-          let tstart = Number(this.timestart);
-          let tend = Number(a[0].split(":")[0]);
+      // if (this.timesign == false) {
+      //   //第一次点击
+      //   if (typeof row[column.label]["id"] != "undefined") {
+      //     this.$message.error("当前时间段已被预约");
+      //     this.resetchose();
+      //   } else {
+      //     this.form.room = column.label;
+      //     this.roomsign = column.label;
+      //     this.form.date1 = a[0];
+      //     this.timestart = a[0].split(":")[0];
+      //     this.timeend = "";
+      //     this.form.date2 = a[1];
+      //     this.timesign = true;
+      //   }
+      // } else {
+      //   //第二次点击
+      //   if (this.form.room == column.label) {
+      //     //仍选择该会议室
+      //     let tstart = Number(this.timestart);
+      //     let tend = Number(a[0].split(":")[0]);
 
-          //判断选择时间段内部有无已选
-          for (let i = tstart; i <= tend; i++) {
-            if (
-              typeof this.tableData[i - 7][column.label]["id"] != "undefined"
-            ) {
-              this.$message.error("当前时间段已有被预约时间段");
-              this.resetchose();
-              break;
-            }
-          }
+      //     //判断选择时间段内部有无已选
+      //     for (let i = tstart; i <= tend; i++) {
+      //       if (
+      //         typeof this.tableData[i - 7][column.label]["id"] != "undefined"
+      //       ) {
+      //         this.$message.error("当前时间段已有被预约时间段");
+      //         this.resetchose();
+      //         break;
+      //       }
+      //     }
 
-          if (Number(a[0].split(":")[0]) <= Number(this.timestart)) {
-            //判断第二次时间是否在第一次前面
-            this.$message.error("请选择正确的时间段");
-            this.resetchose();
-          } else {
-            this.form.date2 = a[1];
-            this.timeend = a[1].split(":")[0];
-            this.bechosed = true;
-          }
-        } else {
-          this.$message.error("请选择同一会议室进行预约");
-          this.resetchose();
-        }
-      }
-    },
+      //     if (Number(a[0].split(":")[0]) <= Number(this.timestart)) {
+      //       //判断第二次时间是否在第一次前面
+      //       this.$message.error("请选择正确的时间段");
+      //       this.resetchose();
+      //     } else {
+      //       this.form.date2 = a[1];
+      //       this.timeend = a[1].split(":")[0];
+      //       this.bechosed = true;
+      //     }
+      //   } else {
+      //     this.$message.error("请选择同一会议室进行预约");
+      //     this.resetchose();
+      //   }
+      // }
+    }
     // addIconClass({ row, column, rowIndex, columnIndex }) {
     //  if (columnIndex != 0)
     //       return "iconfont icon-mic icon-shexiangtou_guanbi";
@@ -429,6 +391,7 @@ export default {
       timestart: "",
       datasign: [],
       choosetable: {},
+      details: {},//获取详情信息
       timesign: false, //第几次点击
       timestart: "",
       timeend: "",
