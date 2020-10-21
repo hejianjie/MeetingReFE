@@ -250,6 +250,10 @@ export default {
         if (data && data.code === 0) {
           this.dataList = data.page.list;
           this.dataList.reverse();
+          for (let i = 0; i < this.dataList.length; i ++) {
+            this.dataList[i].startTime = this.dataList[i].startTime + " : 00";
+            this.dataList[i].endTime = this.dataList[i].endTime + " : 00";
+          }
           this.totalPage = data.page.totalCount;
         } else {
           this.dataList = [];
