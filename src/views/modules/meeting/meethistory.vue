@@ -21,7 +21,7 @@
       <el-form-item>
         <el-input
           v-model="dataForm.key"
-           placeholder="请输入会议室消息"
+          placeholder="请输入会议室消息"
           clearable
         ></el-input>
       </el-form-item>
@@ -206,7 +206,7 @@ export default {
         key: "",
       },
       dataList: [],
-       datevalue: "",
+      datevalue: "",
       pageIndex: 1,
       pageSize: 10,
       totalPage: 0,
@@ -232,12 +232,13 @@ export default {
           page: this.pageIndex,
           limit: this.pageSize,
           key: this.dataForm.key,
-            name: "",
+          name: "",
           date: this.datevalue,
         }),
       }).then(({ data }) => {
         if (data && data.code === 0) {
           this.dataList = data.page.list;
+          this.dataList.reverse();
           this.totalPage = data.page.totalCount;
         } else {
           this.dataList = [];
