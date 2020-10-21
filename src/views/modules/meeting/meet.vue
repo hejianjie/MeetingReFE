@@ -6,9 +6,22 @@
       @keyup.enter.native="getDataList()"
     >
       <el-form-item>
+        <span style="text-align: left; font-weight: 600; font-size: 14px"
+          >选择日期:</span
+        >
+        <el-date-picker
+          v-model="datevalue"
+          type="date"
+          @change="getDataList"
+          placeholder="选择日期"
+          value-format="yyyy-MM-dd"
+        >
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item>
         <el-input
           v-model="dataForm.key"
-          placeholder="参数名"
+          placeholder="请输入想要查询的信息"
           clearable
         ></el-input>
       </el-form-item>
@@ -203,6 +216,7 @@ export default {
       dataForm: {
         key: "",
       },
+      datevalue: "",
       dataList: [],
       pageIndex: 1,
       pageSize: 10,
@@ -229,6 +243,8 @@ export default {
           page: this.pageIndex,
           limit: this.pageSize,
           key: this.dataForm.key,
+          name: "",
+          date: this.datevalue,
         }),
       }).then(({ data }) => {
         if (data && data.code === 0) {
