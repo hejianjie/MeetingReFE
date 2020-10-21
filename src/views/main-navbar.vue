@@ -84,12 +84,13 @@
     methods: {
       //根据不同用户跳转不同首页
       jumpHomepage() {
+        this.$router.push({ name: 'meeting-meet' })
         // console.log(this.$cookie.get('username'))
-        if(this.$cookie.get('username')=='root') {
-          this.$router.push({ name: 'ahome' })
-        }else{
-          this.$router.push({ name: 'home' })
-        }
+        // if(this.$cookie.get('username')=='root') {
+        //   this.$router.push({ name: 'ahome' })
+        // }else{
+        //   this.$router.push({ name: 'home' })
+        // }
       },
       // 修改密码
       updatePasswordHandle () {
