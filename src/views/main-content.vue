@@ -96,7 +96,7 @@
           }
         } else {
           this.menuActiveName = ''
-          this.$router.push({ name: 'home' })
+          this.$router.push({ name: 'meet' })
         }
       },
       // tabs, 关闭当前
@@ -111,7 +111,7 @@
       tabsCloseAllHandle () {
         this.mainTabs = []
         this.menuActiveName = ''
-        this.$router.push({ name: 'home' })
+        this.$router.push({ name: 'meet' })
       },
       // tabs, 刷新当前
       tabsRefreshCurrentHandle () {

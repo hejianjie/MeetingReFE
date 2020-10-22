@@ -26,22 +26,37 @@
             width="100">
             <!-- 预约详情弹出框 -->
             <template slot-scope="scope">
-              <el-popover trigger="hover" placement="left">
-                <el-form ref="form" :model="details" label-width="80px">
+              <el-popover transition="el-zoom-in-center"	 trigger="hover" placement="left">
+                <el-form ref="form" :model="details" label-width="100px">
                   <el-form-item label="使用单位">
                     <el-input v-model="details.department" readonly></el-input>
                   </el-form-item>
                   <el-form-item label="预约人">
                     <el-input v-model="details.roomUser" readonly></el-input>
                   </el-form-item>
+                  <el-form-item label="隶属部门">
+                    <el-input v-model="details.userFrom" readonly></el-input>
+                  </el-form-item>
+                  <el-form-item label="会议室名称">
+                    <el-input v-model="details.roomName" readonly></el-input>
+                  </el-form-item>
+                  <el-form-item label="设备">
+                    <el-input v-model="details.equipment" readonly></el-input>
+                  </el-form-item>
                   <el-form-item label="联系方式">
                     <el-input v-model="details.userPhone" readonly></el-input>
+                  </el-form-item>
+                  <el-form-item label="参会人数">
+                    <el-input v-model="details.userNum" readonly></el-input>
+                  </el-form-item>
+                  <el-form-item label="参会人员">
+                    <el-input v-model="details.users" readonly></el-input>
                   </el-form-item>
                   <el-form-item label="会议主题">
                     <el-input v-model="details.meetingTheme" readonly></el-input>
                   </el-form-item>
-                  <el-form-item label="参会人员">
-                    <el-input v-model="details.users" readonly></el-input>
+                  <el-form-item label="会议时间">
+                    <el-input v-model="details.time" readonly></el-input>
                   </el-form-item>
                   <el-form-item label="备注">
                     <template>
@@ -54,7 +69,7 @@
                     </template>
                   </el-form-item>
                 </el-form>
-                <div slot="reference">
+                <div   slot="reference">
                   <el-button
                     type="text"
                     style="
@@ -255,34 +270,34 @@ export default {
       } catch (error) {}
 
       //点击选择
-      if (columnIndex != 0 && this.timesign == true) {
-        if (
-          this.timeend != "" &&
-          column.label == this.roomsign &&
-          rowIndex >= Number(this.timestart - 7) &&
-          rowIndex <= Number(this.timeend - 8) &&
-          this.bechosed == true
-        ) {
-          //跨区域选择
-          return "border-radius: 8px;background-color:#3E8EF7;color:white;padding:0";
-        }
+      // if (columnIndex != 0 && this.timesign == true) {
+      //   if (
+      //     this.timeend != "" &&
+      //     column.label == this.roomsign &&
+      //     rowIndex >= Number(this.timestart - 7) &&
+      //     rowIndex <= Number(this.timeend - 8) &&
+      //     this.bechosed == true
+      //   ) {
+      //     //跨区域选择
+      //     return "border-radius: 8px;background-color:#3E8EF7;color:white;padding:0";
+      //   }
 
-        if (
-          column.label == this.roomsign &&
-          rowIndex == Number(this.timestart - 7)
-        ) {
-          //单选
-          return "border-radius: 8px;background-color:#3E8EF7;color:white;padding:0";
-        }
-      }
+      //   if (
+      //     column.label == this.roomsign &&
+      //     rowIndex == Number(this.timestart - 7)
+      //   ) {
+      //     //单选
+      //     return "border-radius: 8px;background-color:#3E8EF7;color:white;padding:0";
+      //   }
+      // }
 
       if (columnIndex != 0)
-        return "border-radius: 8px;background-color:rgb(33, 185, 251);padding:0";
+        return "border-radius: 8px;background-color:rgb(33, 185, 251);padding:0;pointer-events: none";
     },
-    close () {
+    // close () {
       
-      this.details = {};
-    },
+    //   this.details = {};
+    // },
     clickhandle(row, column, event, cell) {
       // 获取选择的会议室
       // let chooseroom;
@@ -431,6 +446,7 @@ export default {
       room: [],
       roomsize: "",
       form: {},
+      
       formcache: {},
       datevalue: "",
       timestart: "",

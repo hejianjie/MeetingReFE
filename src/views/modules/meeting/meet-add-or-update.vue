@@ -44,7 +44,7 @@
           placeholder="结束时间"
         ></el-input>
       </el-form-item> -->
-      <el-form-item label="参数人数" prop="userNum">
+      <el-form-item label="参会人数" prop="userNum">
         <el-input v-model="dataForm.userNum" readonly></el-input>
       </el-form-item>
       <el-form-item label="参会人员" prop="users">

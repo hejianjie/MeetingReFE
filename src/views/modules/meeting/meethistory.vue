@@ -35,15 +35,15 @@
       :data="dataList"
       border
       v-loading="dataListLoading"
-      @selection-change="selectionChangeHandle"
+
       style="width: 100%"
     >
-      <el-table-column
+      <!-- <el-table-column
         type="selection"
         header-align="center"
         align="center"
         width="50"
-      >
+      > -->
       </el-table-column>
       <!-- <el-table-column
         prop="id"
@@ -169,12 +169,12 @@
             @click="addOrUpdateHandle(scope.row.id)"
             >详情</el-button
           >
-          <el-button
+          <!-- <el-button
             type="text"
             size="small"
             @click="deleteHandle(scope.row.id)"
             >删除</el-button
-          >
+          > -->
         </template>
       </el-table-column>
     </el-table>
@@ -281,7 +281,7 @@ export default {
             return item.id;
           });
       this.$confirm(
-        `确定对[id=${ids.join(",")}]进行[${id ? "删除" : "批量删除"}]操作?`,
+        `确定进行[${id ? "删除" : "批量删除"}]操作?`,
         "提示",
         {
           confirmButtonText: "确定",
