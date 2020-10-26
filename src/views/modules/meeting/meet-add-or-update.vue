@@ -138,7 +138,7 @@ export default {
           { required: true, message: "会议结束时间不能为空", trigger: "blur" },
         ],
         userNum: [
-          { required: true, message: "参数人数不能为空", trigger: "blur" },
+          { required: true, message: "参会人数不能为空", trigger: "blur" },
         ],
         users: [
           { required: true, message: "参会人员不能为空", trigger: "blur" },

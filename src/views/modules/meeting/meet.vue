@@ -128,7 +128,7 @@
         prop="userNum"
         header-align="center"
         align="center"
-        label="参数人数">
+        label="参会人数">
       </el-table-column>
       <el-table-column
         prop="users"

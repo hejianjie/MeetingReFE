@@ -463,7 +463,7 @@ export default {
         room: [{ required: true, message: "请填写会议室", trigger: "change" }],
         sum: [{ validator: validateSum, trigger: "blur" }],
         leader: [
-          { required: true, message: "请填写参会领导", trigger: "blur" },
+          { required: true, message: "请填写参会人员", trigger: "blur" },
         ],
         theme: [
           {
