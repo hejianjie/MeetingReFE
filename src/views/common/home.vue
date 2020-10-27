@@ -47,7 +47,6 @@
                   item.equipment != '无'
                     ? 'iconfont icon-shexiangtou'
                     : 'iconfont icon-shexiangtou_guanbi'
-                "
                 style="
                   float: right;
                   font-size: 25px;
