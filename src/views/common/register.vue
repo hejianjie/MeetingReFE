@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="!dataForm.id ? '新增' : '修改'"
+    :title="'注册'"
     :close-on-click-modal="false"
     :visible.sync="visible"
   >
@@ -48,7 +48,7 @@
           placeholder="隶属部门"
         ></el-input>
       </el-form-item>
-      <el-form-item label="角色" size="mini" prop="roleIdList">
+      <!-- <el-form-item label="角色" size="mini" prop="roleIdList">
         <el-checkbox-group v-model="dataForm.roleIdList">
           <el-checkbox
             v-for="role in roleList"
@@ -63,7 +63,7 @@
           <el-radio :label="0">禁用</el-radio>
           <el-radio :label="1">正常</el-radio>
         </el-radio-group>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
@@ -137,7 +137,6 @@ export default {
   },
   methods: {
     init(id) {
-  
       this.dataForm.id = id || 0;
       this.$http({
         url: this.$http.adornUrl("/sys/role/select"),
@@ -160,15 +159,13 @@ export default {
               method: "get",
               params: this.$http.adornParams(),
             }).then(({ data }) => {
-                  console.log("data.user.roleIdList")
-                  console.log(data.user.roleIdList)
               if (data && data.code === 0) {
                 this.dataForm.userName = data.user.username;
                 this.dataForm.salt = data.user.salt;
                 this.dataForm.thename = data.user.thename;
                 this.dataForm.department = data.user.department;
                 this.dataForm.mobile = data.user.mobile;
-                this.dataForm.roleIdList = [2];
+                this.dataForm.roleIdList = data.user.roleIdList;
                 this.dataForm.status = data.user.status;
               }
             });
@@ -181,7 +178,7 @@ export default {
         if (valid) {
           this.$http({
             url: this.$http.adornUrl(
-              `/sys/user/${!this.dataForm.id ? "save" : "update"}`
+              `/sys/${!this.dataForm.id ? "register" : "update"}`
             ),
             method: "post",
             data: this.$http.adornData({
@@ -193,7 +190,7 @@ export default {
               department: this.dataForm.department,
               mobile: this.dataForm.mobile,
               status: this.dataForm.status,
-              roleIdList: this.dataForm.roleIdList,
+              roleIdList: [2],
             }),
           }).then(({ data }) => {
             if (data && data.code === 0) {
@@ -203,7 +200,7 @@ export default {
                 duration: 1500,
                 onClose: () => {
                   this.visible = false;
-                  this.$emit("refreshDataList");
+                  //this.$emit("refreshDataList");
                 },
               });
             } else {

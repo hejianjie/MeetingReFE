@@ -52,31 +52,31 @@
                   </el-form-item>
                 </el-form>
                </el-popover> -->
-                  <el-button
-                    type="text"
-                    style="
-                      float: left;
-                      font-size: 18px;
-                      margin-left: 10%;
-                      color: white;
-                      line-height: 25px;
-                    "
-                    >{{ item.capacity }}</el-button
-                  >
-                  <el-button
-                    type="text"
-                    :class="
-                      item.equipment != '无'
-                        ? 'iconfont icon-shexiangtou'
-                        : 'iconfont icon-shexiangtou_guanbi'
-                    "
-                    style="
-                      float: right;
-                      font-size: 25px;
-                      margin-right: 10%;
-                      color: #686868;
-                    "
-                  ></el-button>    
+              <el-button
+                type="text"
+                style="
+                  float: left;
+                  font-size: 18px;
+                  margin-left: 10%;
+                  color: white;
+                  line-height: 25px;
+                "
+                >{{ item.capacity }}</el-button
+              >
+              <el-button
+                type="text"
+                :class="
+                  item.equipment != '无'
+                    ? 'iconfont icon-shexiangtou'
+                    : 'iconfont icon-shexiangtou_guanbi'
+                "
+                style="
+                  float: right;
+                  font-size: 25px;
+                  margin-right: 10%;
+                  color: #686868;
+                "
+              ></el-button>
             </template>
             <!-- <span style="float:left" class="iconfont icon-mic"></span>
             <span  style="float:right" class="iconfonticon-shexiangtou_guanbi"></span>-->
@@ -215,13 +215,13 @@ export default {
     // },
     getNowTime() {
       var now = new Date();
-      let hourchecksign = 0; //0今天 1下一天
+      let hourchecksign = this.datevalue;
       var hour = now.getHours(); //得到小时
-      if (hour >= 20) {
-        this.hourvalue = 0;
-        hourchecksign = 1;
-        now = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-      }
+      // if (hour >= 20) {
+      //   this.hourvalue = 0;
+      //   hourchecksign = 1;
+      //   now = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+      // }
       var year = now.getFullYear(); //得到年份
       var month = now.getMonth(); //得到月份
       var date = now.getDate(); //得到日期
@@ -229,12 +229,20 @@ export default {
       month = month.toString().padStart(2, "0");
       date = date.toString().padStart(2, "0");
       var defaultDate = `${year}-${month}-${date}`;
-      // var defaultDate = '2020-09-24';
-      this.datevalue = defaultDate;
-      console.log("this.datevalue");
-      console.log(this.datevalue);
-      if (hourchecksign == 0)
-       this.hourvalue = hour;
+      if (this.datevalue != "") {
+        //非初次加载
+        if (this.datevalue === defaultDate) {
+          // var defaultDate = '2020-09-24';
+          //是今天
+          this.hourvalue = hour;
+        } else {
+          //不是
+          this.hourvalue = 0;
+        }
+      } else {
+        this.datevalue = defaultDate;
+        this.hourvalue = hour;
+      }
 
       this.expireTimeOption = {
         disabledDate(date) {
@@ -242,8 +250,6 @@ export default {
           return date.getTime() < now.getTime() - 24 * 60 * 60 * 1000;
         },
       };
-      console.log("this.hourvalue");
-      console.log(this.hourvalue);
     },
     geteqlist() {
       this.$http({
@@ -262,6 +268,7 @@ export default {
       });
     },
     getTanleMsg() {
+      this.reset();
       this.$http({
         url: this.$http.adornUrl("/meeting/meet/table"),
         method: "post",
@@ -468,7 +475,7 @@ export default {
             this.$message.error("当前时间段已被预约");
             this.resetchose();
           } else if (Number(row.date.split(":")[0]) <= Number(this.hourvalue)) {
-            this.$message.error("当前时间段已过，无法预约");         
+            this.$message.error("当前时间段已过，无法预约");
             this.resetchose();
           } else {
             this.form.room = column.label;
