@@ -58,7 +58,7 @@
                   float: left;
                   font-size: 18px;
                   margin-left: 10%;
-                  color: white;
+                  color: black;
                   line-height: 25px;
                 "
                 >{{ item.capacity }}</el-button
@@ -74,7 +74,7 @@
                   float: right;
                   font-size: 25px;
                   margin-right: 10%;
-                  color: #686868;
+                  color: black;
                 "
               ></el-button>
             </template>
@@ -411,14 +411,14 @@ export default {
       try {
         if (typeof row[column.label]["id"] != "undefined") {
           if (row[column.label]["startTime"] === row["date"].split(":")[0])
-            return "border-radius: 8px;background-color:#909399;color:white;padding:0;border-top: 2px solid #475364";
+            return "border-radius: 8px;background-color:#D3D3D3;color:white;padding:0;border-top: 2px solid #475364";
           else if (
             row[column.label]["endTime"] ===
             row["date"].split(":")[1].split("-")[1]
           )
-            return "border-radius: 8px;background-color:#909399;color:white;padding:0;border-bottom: 2px solid #475364";
+            return "border-radius: 8px;background-color:#D3D3D3;color:white;padding:0;border-bottom: 2px solid #475364";
           else
-            return "border-radius: 8px;background-color:#909399;color:white;padding:0";
+            return "border-radius: 8px;background-color:#D3D3D3;color:white;padding:0";
         }
       } catch (error) {}
 
@@ -432,7 +432,7 @@ export default {
           this.bechosed == true
         ) {
           //跨区域选择
-          return "border-radius: 8px;background-color:#3E8EF7;color:white;padding:0";
+          return "border-radius: 8px;background-color:#3D98FF;color:white;padding:0";
         }
 
         if (
@@ -440,12 +440,12 @@ export default {
           rowIndex == Number(this.timestart - 7)
         ) {
           //单选
-          return "border-radius: 8px;background-color:#3E8EF7;color:white;padding:0";
+          return "border-radius: 8px;background-color:#3D98FF;color:white;padding:0";
         }
       }
 
       if (columnIndex != 0)
-        return "border-radius: 8px;background-color:rgb(33, 185, 251);padding:0";
+        return "border-radius: 8px;background-color:#FFFFFF;padding:0";
     },
     clickhandle(row, column, event, cell) {
       this.getNowTime();

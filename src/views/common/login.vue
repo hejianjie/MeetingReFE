@@ -122,6 +122,7 @@ export default {
           }).then(({ data }) => {
             if (data && data.code === 0) {
               this.$cookie.set("token", data.token);
+              this.$cookie.set('username', this.dataForm.userName);
               this.$router.replace({ name: "meeting-meet" });
             } else {
               this.$message.error(data.msg);

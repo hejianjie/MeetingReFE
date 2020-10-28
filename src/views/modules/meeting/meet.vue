@@ -21,14 +21,14 @@
       <el-form-item>
         <el-input
           v-model="dataForm.key"
-          placeholder="请输入会议室消息"
+          placeholder="请输入会议室名称"
           clearable
         ></el-input>
       </el-form-item>
-      <el-form-item>
+      <el-form-item >
         <el-button @click="getDataList()">查询</el-button>
-        <el-button
-          v-if="isAuth('meeting:meet:save')"
+        <el-button 
+          v-if="this.$cookie.get('username')!='root' && isAuth('meeting:meet:save')"
           type="primary"
           @click="addHandle()"
           >新增</el-button
@@ -209,6 +209,7 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import AddOrUpdate from "./meet-add-or-update";
 export default {
   data() {
