@@ -137,7 +137,6 @@ export default {
   },
   methods: {
     init(id) {
-  
       this.dataForm.id = id || 0;
       this.$http({
         url: this.$http.adornUrl("/sys/role/select"),
@@ -160,8 +159,6 @@ export default {
               method: "get",
               params: this.$http.adornParams(),
             }).then(({ data }) => {
-                  console.log("data.user.roleIdList")
-                  console.log(data.user.roleIdList)
               if (data && data.code === 0) {
                 this.dataForm.userName = data.user.username;
                 this.dataForm.salt = data.user.salt;
