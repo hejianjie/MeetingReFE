@@ -45,9 +45,7 @@
           >
         </el-upload>
       </el-form-item>
-      <el-form-item>
-        <el-button @click="clearFiles" type="danger">清空文件</el-button>
-      </el-form-item>
+   
     </el-form>
     <el-table
       :data="dataList"
@@ -190,12 +188,11 @@ export default {
     this.getDataList();
   },
   methods: {
-    clearFiles() {
-      this.$refs["upload"].clearFiles();
-    },
+
     handleAvatarSuccess() {
       console.log(555555);
       this.getDataList();
+      this.$refs["upload"].clearFiles();
     },
     // Excel批量增加用户
     uploadUrl: function () {
