@@ -18,7 +18,7 @@
           v-if="isAuth('sys:user:save')"
           type="primary"
           @click="addOrUpdateHandle()"
-          >新增</el-button
+          >新增用户</el-button
         >
         <el-button
           v-if="isAuth('sys:user:delete')"
@@ -44,6 +44,9 @@
             >选取文件</el-button
           >
         </el-upload>
+      </el-form-item>
+      <el-form-item>
+        <el-button @click="clearFiles" type="danger">清空文件</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -187,6 +190,9 @@ export default {
     this.getDataList();
   },
   methods: {
+    clearFiles() {
+      this.$refs["upload"].clearFiles();
+    },
     handleAvatarSuccess() {
       console.log(555555);
       this.getDataList();
