@@ -8,7 +8,7 @@
       <el-form-item>
         <el-input
           v-model="dataForm.userName"
-          placeholder="用户名"
+          placeholder="请输入用户名"
           clearable
         ></el-input>
       </el-form-item>
@@ -28,6 +28,11 @@
           >批量删除</el-button
         >
       </el-form-item>
+      <el-form-item class="temp">
+        <a href="../../../../static/file/template.xlsx" download="template.xlsx"
+          >下载模板</a
+        >
+      </el-form-item>
       <el-form-item>
         <el-upload
           class="upload-demo"
@@ -41,11 +46,10 @@
           :on-success="handleAvatarSuccess"
         >
           <el-button slot="trigger" type="primary" title="只能上传excel文件"
-            >选取文件</el-button
+            >导入文件</el-button
           >
         </el-upload>
       </el-form-item>
-   
     </el-form>
     <el-table
       :data="dataList"
@@ -188,7 +192,6 @@ export default {
     this.getDataList();
   },
   methods: {
-
     handleAvatarSuccess() {
       console.log(555555);
       this.getDataList();
@@ -328,3 +331,25 @@ export default {
   },
 };
 </script>
+<style >
+.temp {
+  margin: 0;
+  padding: 0;
+  width: 100px;
+  height: 36px;
+  background: #318df7;
+  border-radius: 5px;
+  text-align: center;
+  transition: color 0.5s;
+}
+a,
+a:hover,
+a:link {
+  text-decoration: none;
+  color: white;
+  font-size: 14px;
+}
+.temp:hover {
+  background-color: #5ea5f9;
+}
+</style>
