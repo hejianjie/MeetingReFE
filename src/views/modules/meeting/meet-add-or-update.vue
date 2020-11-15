@@ -32,13 +32,13 @@
       <el-form-item label="会议日期" prop="date">
         <el-input v-model="dataForm.date" readonly></el-input>
       </el-form-item>
-      <!-- <el-form-item label="开始时间" prop="startTime">
+      <el-form-item label="会议时间" prop="startTime">
         <el-input
-          v-model="dataForm.startTime"
-          placeholder="开始时间"
+          v-model="dataForm.startTime+'：00'+'-'+dataForm.endTime+'：00'"
+          placeholder="会议时间"
         ></el-input>
       </el-form-item>
-      <el-form-item label="结束时间" prop="endTime">
+      <!-- <el-form-item label="结束时间" prop="endTime">
         <el-input
           v-model="dataForm.endTime"
           placeholder="结束时间"

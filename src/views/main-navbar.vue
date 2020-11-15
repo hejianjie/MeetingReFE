@@ -82,7 +82,6 @@
       }
     },
     methods: {
-      //根据不同用户跳转不同首页
       jumpHomepage() {
         this.$router.push({ name: 'meeting-meet' })
         // console.log(this.$cookie.get('username'))

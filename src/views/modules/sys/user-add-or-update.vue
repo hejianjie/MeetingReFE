@@ -15,6 +15,7 @@
         <el-input v-model="dataForm.userName" placeholder="登录帐号"></el-input>
       </el-form-item>
       <el-form-item
+        v-if="dataForm.id==0"
         label="密码"
         prop="password"
         :class="{ 'is-required': !dataForm.id }"
@@ -26,6 +27,7 @@
         ></el-input>
       </el-form-item>
       <el-form-item
+        v-if="dataForm.id==0"
         label="确认密码"
         prop="comfirmPassword"
         :class="{ 'is-required': !dataForm.id }"
@@ -48,7 +50,7 @@
           placeholder="隶属部门"
         ></el-input>
       </el-form-item>
-      <el-form-item label="角色" size="mini" prop="roleIdList">
+      <!-- <el-form-item label="角色" size="mini" prop="roleIdList">
         <el-checkbox-group v-model="dataForm.roleIdList">
           <el-checkbox
             v-for="role in roleList"
@@ -57,7 +59,7 @@
             >{{ role.roleName }}</el-checkbox
           >
         </el-checkbox-group>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="状态" size="mini" prop="status">
         <el-radio-group v-model="dataForm.status">
           <el-radio :label="0">禁用</el-radio>

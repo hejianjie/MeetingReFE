@@ -65,14 +65,14 @@
         width="50"
       >
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="userId"
         header-align="center"
         align="center"
         width="80"
         label="ID"
       >
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         prop="username"
         header-align="center"
@@ -126,10 +126,17 @@
         fixed="right"
         header-align="center"
         align="center"
-        width="150"
+        width="180"
         label="操作"
       >
         <template slot-scope="scope">
+          <el-button
+            v-if="isAuth('sys:user:update')"
+            type="text"
+            size="small"
+            @click="resetPassword(scope.row.userId)"
+            >重置密码</el-button
+          >
           <el-button
             v-if="isAuth('sys:user:update')"
             type="text"
@@ -172,7 +179,16 @@ export default {
   data() {
     return {
       dataForm: {
+         id: 0,
         userName: "",
+        password: "",
+        comfirmPassword: "",
+        salt: "",
+        thename: "",
+        mobile: "",
+        roleIdList: [],
+        department: "",
+        status: 1,
       },
       fileName: "",
       fileList: [],
@@ -293,6 +309,69 @@ export default {
       this.$nextTick(() => {
         this.$refs.addOrUpdate.init(id);
       });
+    },
+    //重置密码
+    resetPassword(id) {
+      this.dataForm.id = id || 0;
+      this.$http({
+        url: this.$http.adornUrl("/sys/role/select"),
+        method: "get",
+        params: this.$http.adornParams(),
+      })
+        .then(() => {
+          if (this.dataForm.id) {
+            this.$http({
+              url: this.$http.adornUrl(`/sys/user/info/${this.dataForm.id}`),
+              method: "get",
+              params: this.$http.adornParams(),
+            }).then(({ data }) => {
+              if (data && data.code === 0) {
+                this.dataForm.userName = data.user.username;
+                this.dataForm.salt = data.user.salt;
+                this.dataForm.thename = data.user.thename;
+                this.dataForm.department = data.user.department;
+                this.dataForm.mobile = data.user.mobile;
+                this.dataForm.roleIdList = [2];
+                this.dataForm.status = data.user.status;
+              }
+            });
+          };
+        });
+      this.$confirm(`确定进行[重置密码]操作?`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.$http({
+            url: this.$http.adornUrl(`/sys/user/update`),
+            method: "post",
+            data: this.$http.adornData({
+              userId: this.dataForm.id || undefined,
+              username: this.dataForm.userName,
+              password: "abc",
+              salt: this.dataForm.salt,
+              thename: this.dataForm.thename,
+              department: this.dataForm.department,
+              mobile: this.dataForm.mobile,
+              status: this.dataForm.status,
+              roleIdList: this.dataForm.roleIdList,
+            }),
+          }).then(({ data }) => {
+            if (data && data.code === 0) {
+              console.log("data.password"),
+              console.log(data),
+              this.$message({
+                message: "操作成功",
+                type: "success",
+                duration: 1500,
+              });
+            } else {
+              this.$message.error(data.msg);
+            }
+          });
+        })
+        .catch(() => {});
     },
     // 删除
     deleteHandle(id) {

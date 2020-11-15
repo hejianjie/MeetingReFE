@@ -92,7 +92,7 @@
           >
           </el-form-item>
           <el-form-item label="使用单位" prop="department">
-            <el-input v-model="form.department"></el-input>
+            <el-input v-model="form.department" readonly></el-input>
           </el-form-item>
 
           <el-col :span="12">
@@ -287,7 +287,8 @@ export default {
           this.room = data.room;
           this.now_user = data.now_user;
           this.formcache = {
-            department: null,
+            sum:'',
+            department: '开发区校区',
             name: data.now_user.thename,
             mobile: data.now_user.mobile,
             belong: data.now_user.department,
@@ -320,7 +321,8 @@ export default {
               date1: this.form.date1,
               date2: this.form.date2,
               datechoose: this.form.datechoose,
-              department: this.form.department,
+              // department: this.form.department,
+              department: '开发区校区',
               from: this.form.belong,
               equipment: this.form.equipment,
               leader: this.form.leader,
@@ -390,7 +392,7 @@ export default {
     },
     reset() {
       this.formcache = {
-        department: null,
+        department: '开发区校区',
         name: this.now_user.thename,
         mobile: this.now_user.mobile,
         belong: this.now_user.department,
@@ -572,9 +574,9 @@ export default {
       roomsign: "", //标记点击选择的会议室
       bechosed: false,
       rules: {
-        department: [
-          { required: true, message: "请填写使用单位", trigger: "change" },
-        ],
+        // department: [
+        //   { required: true, message: "请填写使用单位", trigger: "change" },
+        // ],
         room: [{ required: true, message: "请填写会议室", trigger: "change" }],
         sum: [{ validator: validateSum, trigger: "blur" }],
         leader: [
