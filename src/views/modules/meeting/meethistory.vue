@@ -27,6 +27,7 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
+           <el-button @click="echarttest()">查询测试</el-button>
         <!-- <el-button v-if="isAuth('meeting:meet:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
         <el-button v-if="isAuth('meeting:meet:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button> -->
       </el-form-item>
@@ -222,6 +223,20 @@ export default {
     this.getDataList();
   },
   methods: {
+    echarttest() {
+      this.$http({
+        url: this.$http.adornUrl("/meeting/meet/echart"),
+        method: "get",
+      }).then(({ data }) => {
+        console.log("测试");
+        console.log(data);
+        if (data && data.code === 0) {
+          console.log(data);
+          console.log("测试中");
+        }
+        console.log("测试结束");
+      });
+    },
     // 获取数据列表
     getDataList() {
       this.dataListLoading = true;
@@ -239,7 +254,7 @@ export default {
         if (data && data.code === 0) {
           this.dataList = data.page.list;
           this.dataList.reverse();
-          for (let i = 0; i < this.dataList.length; i ++) {
+          for (let i = 0; i < this.dataList.length; i++) {
             this.dataList[i].startTime = this.dataList[i].startTime + " : 00";
             this.dataList[i].endTime = this.dataList[i].endTime + " : 00";
           }
@@ -280,15 +295,11 @@ export default {
         : this.dataListSelections.map((item) => {
             return item.id;
           });
-      this.$confirm(
-        `确定进行[${id ? "删除" : "批量删除"}]操作?`,
-        "提示",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-        }
-      ).then(() => {
+      this.$confirm(`确定进行[${id ? "删除" : "批量删除"}]操作?`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      }).then(() => {
         this.$http({
           url: this.$http.adornUrl("/meeting/meet/delete"),
           method: "post",
