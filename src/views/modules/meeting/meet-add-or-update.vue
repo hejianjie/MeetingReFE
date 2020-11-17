@@ -66,10 +66,10 @@
         <el-input v-model="dataForm.data2" placeholder="预留字段2"></el-input>
       </el-form-item> -->
     </el-form>
-    <span slot="footer" class="dialog-footer">
+    <!-- <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
       <el-button type="primary" @click="dataFormSubmit()">确定</el-button>
-    </span>
+    </span> -->
   </el-dialog>
 </template>
 

@@ -10,7 +10,12 @@ import '@/assets/scss/index.scss'
 import httpRequest from '@/utils/httpRequest' // api: https://github.com/axios/axios
 import { isAuth } from '@/utils'
 import cloneDeep from 'lodash/cloneDeep'
-
+import echarts from "echarts/dist/echarts.common"
+// import axios from 'axios'
+// import VueAxios from 'vue-axios'
+// Vue.prototype.$axios = axios;
+// Vue.use(VueAxios, axios);
+Vue.prototype.$echarts = echarts
 Vue.use(VueCookie)
 Vue.config.productionTip = false
 
