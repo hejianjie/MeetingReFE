@@ -210,6 +210,7 @@ export default {
   methods: {
     handleAvatarSuccess() {
       console.log(555555);
+      alert("导入文件成功！")
       this.getDataList();
       this.$refs["upload"].clearFiles();
     },
@@ -349,7 +350,7 @@ export default {
             data: this.$http.adornData({
               userId: this.dataForm.id || undefined,
               username: this.dataForm.userName,
-              password: "abc",
+              password: "123",
               salt: this.dataForm.salt,
               thename: this.dataForm.thename,
               department: this.dataForm.department,

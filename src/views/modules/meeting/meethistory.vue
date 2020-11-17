@@ -90,6 +90,7 @@
         prop="date"
         header-align="center"
         align="center"
+        sortable
         label="会议日期"
       >
       </el-table-column>
