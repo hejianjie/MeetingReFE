@@ -165,7 +165,7 @@ export default {
 
 .chart-view{
   margin: 20px auto;
-  width: 600px;
+  width: 800px;
   height: 600px;
 }
 
