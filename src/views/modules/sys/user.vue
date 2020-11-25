@@ -179,7 +179,7 @@ export default {
   data() {
     return {
       dataForm: {
-         id: 0,
+        id: 0,
         userName: "",
         password: "",
         comfirmPassword: "",
@@ -210,7 +210,7 @@ export default {
   methods: {
     handleAvatarSuccess() {
       console.log(555555);
-      alert("导入文件成功！")
+      alert("导入文件成功！");
       this.getDataList();
       this.$refs["upload"].clearFiles();
     },
@@ -318,26 +318,25 @@ export default {
         url: this.$http.adornUrl("/sys/role/select"),
         method: "get",
         params: this.$http.adornParams(),
-      })
-        .then(() => {
-          if (this.dataForm.id) {
-            this.$http({
-              url: this.$http.adornUrl(`/sys/user/info/${this.dataForm.id}`),
-              method: "get",
-              params: this.$http.adornParams(),
-            }).then(({ data }) => {
-              if (data && data.code === 0) {
-                this.dataForm.userName = data.user.username;
-                this.dataForm.salt = data.user.salt;
-                this.dataForm.thename = data.user.thename;
-                this.dataForm.department = data.user.department;
-                this.dataForm.mobile = data.user.mobile;
-                this.dataForm.roleIdList = [2];
-                this.dataForm.status = data.user.status;
-              }
-            });
-          };
-        });
+      }).then(() => {
+        if (this.dataForm.id) {
+          this.$http({
+            url: this.$http.adornUrl(`/sys/user/info/${this.dataForm.id}`),
+            method: "get",
+            params: this.$http.adornParams(),
+          }).then(({ data }) => {
+            if (data && data.code === 0) {
+              this.dataForm.userName = data.user.username;
+              this.dataForm.salt = data.user.salt;
+              this.dataForm.thename = data.user.thename;
+              this.dataForm.department = data.user.department;
+              this.dataForm.mobile = data.user.mobile;
+              this.dataForm.roleIdList = [2];
+              this.dataForm.status = data.user.status;
+            }
+          });
+        }
+      });
       this.$confirm(`确定进行[重置密码]操作?`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -361,12 +360,12 @@ export default {
           }).then(({ data }) => {
             if (data && data.code === 0) {
               console.log("data.password"),
-              console.log(data),
-              this.$message({
-                message: "操作成功",
-                type: "success",
-                duration: 1500,
-              });
+                console.log(data),
+                this.$message({
+                  message: "操作成功",
+                  type: "success",
+                  duration: 1500,
+                });
             } else {
               this.$message.error(data.msg);
             }
@@ -421,6 +420,11 @@ export default {
   border-radius: 5px;
   text-align: center;
   transition: color 0.5s;
+}
+a {
+  display: inline-block;
+  width: 100px;
+  height: 36px;
 }
 a,
 a:hover,
