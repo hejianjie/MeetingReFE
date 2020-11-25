@@ -50,10 +50,7 @@
                   </el-form-item>
                   <el-form-item label="参会人数">
                     <el-input v-model="details.userNum" readonly></el-input>
-                  </el-form-item>
-                  <el-form-item label="参会人员">
-                    <el-input v-model="details.users" readonly></el-input>
-                  </el-form-item>
+                  </el-form-item>               
                   <el-form-item label="会议主题">
                     <el-input v-model="details.meetingTheme" readonly></el-input>
                   </el-form-item>
