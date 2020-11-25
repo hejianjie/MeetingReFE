@@ -145,8 +145,8 @@
                 v-model="form.sum"
               ></el-input>           
             </el-col>
-            <el-col :span="11">
-              <span> 该会议室</span>
+            <el-col v-show="!this.roomsize==''" :span="11" >
+              <span   v-text="'\xa0所选会议室可容纳\xa0'+this.roomsize+'\xa0人'"> </span>
             </el-col>
           </el-form-item>
           <!-- <el-form-item label="参会人员" prop="leader">
@@ -392,6 +392,7 @@ export default {
         equipment: [],
       };
       this.form = this.formcache;
+      this.roomsize="";
       this.resetchose();
       // this.$router.go(0);
     },
