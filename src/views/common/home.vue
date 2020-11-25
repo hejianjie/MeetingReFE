@@ -146,7 +146,7 @@
               ></el-input>           
             </el-col>
             <el-col v-show="!this.roomsize==''" :span="11" >
-              <span   v-text="'\xa0所选会议室可容纳\xa0'+this.roomsize+'\xa0人'"> </span>
+              <span   v-text="'\u3000所选会议室可容纳\u3000'+this.roomsize+'\u3000人'"> </span>
             </el-col>
           </el-form-item>
           <!-- <el-form-item label="参会人员" prop="leader">
@@ -568,6 +568,7 @@ export default {
         // department: [
         //   { required: true, message: "请填写使用单位", trigger: "change" },
         // ],
+         room: [{ required: true, message: "请填写会议室", trigger: "change" }],
         
         sum: [{ validator: validateSum, trigger: "blur" }],        
         theme: [
