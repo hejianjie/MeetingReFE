@@ -1,8 +1,6 @@
 <template>
   <div>
-    <el-row
-      v-loading="dataListLoading"
-      element-loading-text="拼命加载中">
+    <el-row v-loading="dataListLoading" element-loading-text="拼命加载中">
       <el-col :span="16">
         <span style="text-align: left; font-weight: 600; font-size: 14px"
           >选择日期:</span
@@ -21,7 +19,6 @@
           :data="tableData"
           :cell-style="cellStyle"
           border
-        
           @cell-click="clickhandle"
           style="width: 95%"
         >
@@ -33,7 +30,7 @@
             :label="item.roomName"
             width="100"
           >
-            <template slot-scope="scope">         
+            <template slot-scope="scope">
               <el-button
                 type="text"
                 style="
@@ -117,7 +114,7 @@
               <el-input v-model="form.datechoose" readonly></el-input>
             </el-col>
           </el-form-item>
-          <el-form-item label="活动时间">
+          <el-form-item label="活动时间" style="margin:0">
             <el-col :span="11">
               <el-input
                 readonly
@@ -136,6 +133,9 @@
               ></el-input>
             </el-col>
           </el-form-item>
+          <el-form-item>
+            <span style="color: gray">请点击左侧单元格选择预约时间段</span>
+          </el-form-item>
           <el-form-item label="参会人数" prop="sum">
             <el-col :span="11">
               <el-input
@@ -143,10 +143,15 @@
                 min="2"
                 max="100"
                 v-model="form.sum"
-              ></el-input>           
+              ></el-input>
             </el-col>
-            <el-col v-show="!this.roomsize==''" :span="11" >
-              <span   v-text="'\u3000所选会议室可容纳\u3000'+this.roomsize+'\u3000人'"> </span>
+            <el-col v-show="!this.roomsize == ''" :span="11">
+              <span
+                v-text="
+                  '\u3000所选会议室可容纳\u3000' + this.roomsize + '\u3000人'
+                "
+              >
+              </span>
             </el-col>
           </el-form-item>
           <!-- <el-form-item label="参会人员" prop="leader">
@@ -274,8 +279,8 @@ export default {
           this.room = data.room;
           this.now_user = data.now_user;
           this.formcache = {
-            sum:'',
-            department: '开发区校区',
+            sum: "",
+            department: "开发区校区",
             name: data.now_user.thename,
             mobile: data.now_user.mobile,
             belong: data.now_user.department,
@@ -310,10 +315,10 @@ export default {
               date2: this.form.date2,
               datechoose: this.form.datechoose,
               // department: this.form.department,
-              department: '开发区校区',
+              department: "开发区校区",
               from: this.form.belong,
               leader: "",
-              equipment: this.form.equipment,                         
+              equipment: this.form.equipment,
               mobile: this.form.mobile,
               name: this.form.name,
               note: this.form.note,
@@ -380,7 +385,7 @@ export default {
     },
     reset() {
       this.formcache = {
-        department: '开发区校区',
+        department: "开发区校区",
         name: this.now_user.thename,
         mobile: this.now_user.mobile,
         belong: this.now_user.department,
@@ -390,9 +395,10 @@ export default {
         date2: null,
         room: null,
         equipment: [],
+        sum: "",
       };
       this.form = this.formcache;
-      this.roomsize="";
+      this.roomsize = "";
       this.resetchose();
       // this.$router.go(0);
     },
@@ -568,9 +574,9 @@ export default {
         // department: [
         //   { required: true, message: "请填写使用单位", trigger: "change" },
         // ],
-         room: [{ required: true, message: "请填写会议室", trigger: "change" }],
-        
-        sum: [{ validator: validateSum, trigger: "blur" }],        
+        room: [{ required: true, message: "请填写会议室", trigger: "change" }],
+
+        sum: [{ validator: validateSum, trigger: "blur" }],
         theme: [
           {
             type: "array",
