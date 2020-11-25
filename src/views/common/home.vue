@@ -1,8 +1,8 @@
-
-
 <template>
   <div>
-    <el-row>
+    <el-row
+      v-loading="dataListLoading"
+      element-loading-text="拼命加载中">
       <el-col :span="16">
         <span style="text-align: left; font-weight: 600; font-size: 14px"
           >选择日期:</span
@@ -21,6 +21,7 @@
           :data="tableData"
           :cell-style="cellStyle"
           border
+        
           @cell-click="clickhandle"
           style="width: 95%"
         >
@@ -32,26 +33,7 @@
             :label="item.roomName"
             width="100"
           >
-            <template slot-scope="scope">
-              <!-- <el-popover trigger="hover" placement="right">
-                <el-form ref="form" :model="details" label-width="100px">
-                  <el-form-item label="会议室名称">
-                    <el-input v-model="details.roomName" readonly></el-input>
-                  </el-form-item>
-                  <el-form-item label="所属区域">
-                    <el-input v-model="details.roomArea" readonly></el-input>
-                  </el-form-item>
-                  <el-form-item label="会议室地点">
-                    <el-input v-model="details.location" readonly></el-input>
-                  </el-form-item>
-                  <el-form-item label="设备">
-                    <el-input v-model="details.equipment" readonly></el-input>
-                  </el-form-item>
-                  <el-form-item label="容纳人数">
-                    <el-input v-model="details.capacity" readonly></el-input>
-                  </el-form-item>
-                </el-form>
-               </el-popover> -->
+            <template slot-scope="scope">         
               <el-button
                 type="text"
                 style="
@@ -78,8 +60,6 @@
                 "
               ></el-button>
             </template>
-            <!-- <span style="float:left" class="iconfont icon-mic"></span>
-            <span  style="float:right" class="iconfonticon-shexiangtou_guanbi"></span>-->
           </el-table-column>
         </el-table>
       </el-col>
@@ -129,9 +109,12 @@
           <el-form-item label="会议室" prop="room">
             <el-input readonly v-model="form.room"></el-input>
           </el-form-item>
+          <el-form-item label="地点" prop="location">
+            <el-input readonly v-model="this.location"></el-input>
+          </el-form-item>
           <el-form-item label="活动日期">
             <el-col :span="11">
-              <el-input v-model="form.datechoose"></el-input>
+              <el-input v-model="form.datechoose" readonly></el-input>
             </el-col>
           </el-form-item>
           <el-form-item label="活动时间">
@@ -160,12 +143,15 @@
                 min="2"
                 max="100"
                 v-model="form.sum"
-              ></el-input>
+              ></el-input>           
+            </el-col>
+            <el-col :span="11">
+              <span> 该会议室</span>
             </el-col>
           </el-form-item>
-          <el-form-item label="参会人员" prop="leader">
+          <!-- <el-form-item label="参会人员" prop="leader">
             <el-input v-model="form.leader"></el-input>
-          </el-form-item>
+          </el-form-item> -->
 
           <el-form-item label="会议用途" prop="theme">
             <el-checkbox-group v-model="form.theme" @change="selectedChange">
@@ -268,6 +254,7 @@ export default {
       });
     },
     getTanleMsg() {
+      this.dataListLoading = true;
       this.reset();
       this.$http({
         url: this.$http.adornUrl("/meeting/meet/table"),
@@ -303,6 +290,7 @@ export default {
         } else {
           this.$message.error(data.msg);
         }
+        this.dataListLoading = false;
       });
     },
     submitForm(form) {
@@ -324,8 +312,8 @@ export default {
               // department: this.form.department,
               department: '开发区校区',
               from: this.form.belong,
-              equipment: this.form.equipment,
-              leader: this.form.leader,
+              leader: "",
+              equipment: this.form.equipment,                         
               mobile: this.form.mobile,
               name: this.form.name,
               note: this.form.note,
@@ -369,19 +357,19 @@ export default {
         }
       }
     },
-    context() {
-      console.log("当前各项值");
-      console.log("this.timesign");
-      console.log(this.timesign);
-      console.log("this.timestart");
-      console.log(this.timestart);
-      console.log("this.timeend");
-      console.log(this.timeend);
-      console.log("this.roomsign");
-      console.log(this.roomsign);
-      console.log("this.bechosed");
-      console.log(this.bechosed);
-    },
+    // context() {
+    //   console.log("当前各项值");
+    //   console.log("this.timesign");
+    //   console.log(this.timesign);
+    //   console.log("this.timestart");
+    //   console.log(this.timestart);
+    //   console.log("this.timeend");
+    //   console.log(this.timeend);
+    //   console.log("this.roomsign");
+    //   console.log(this.roomsign);
+    //   console.log("this.bechosed");
+    //   console.log(this.bechosed);
+    // },
     resetchose() {
       this.timesign = false;
       this.timestart = "";
@@ -459,7 +447,6 @@ export default {
         console.log(row);
         console.log("列");
         console.log(column);
-        // console.log("====");
 
         // 获取选择的会议室
         let chooseroom;
@@ -468,6 +455,7 @@ export default {
 
         // 获取选择的会议室人数判断上限
         this.roomsize = chooseroom.capacity;
+        this.location = chooseroom.location;
 
         if (this.timesign == false) {
           //第一次点击
@@ -555,6 +543,8 @@ export default {
       }
     };
     return {
+      location: "",
+      dataListLoading: false,
       tableData: [],
       room: [],
       now_user: {},
@@ -577,11 +567,8 @@ export default {
         // department: [
         //   { required: true, message: "请填写使用单位", trigger: "change" },
         // ],
-        room: [{ required: true, message: "请填写会议室", trigger: "change" }],
-        sum: [{ validator: validateSum, trigger: "blur" }],
-        leader: [
-          { required: true, message: "请填写参会人员", trigger: "blur" },
-        ],
+        
+        sum: [{ validator: validateSum, trigger: "blur" }],        
         theme: [
           {
             type: "array",

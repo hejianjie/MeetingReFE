@@ -27,31 +27,15 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-           <!-- <el-button @click="echarttest()">查询测试</el-button> -->
-        <!-- <el-button v-if="isAuth('meeting:meet:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('meeting:meet:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button> -->
       </el-form-item>
     </el-form>
     <el-table
       :data="dataList"
       border
       v-loading="dataListLoading"
-
       style="width: 100%"
     >
-      <!-- <el-table-column
-        type="selection"
-        header-align="center"
-        align="center"
-        width="50"
-      > -->
       </el-table-column>
-      <!-- <el-table-column
-        prop="id"
-        header-align="center"
-        align="center"
-        label="唯一标识">
-      </el-table-column> -->
       <el-table-column
         prop="department"
         header-align="center"
@@ -66,12 +50,6 @@
         label="预约人"
       >
       </el-table-column>
-      <!-- <el-table-column
-        prop="userFrom"
-        header-align="center"
-        align="center"
-        label="预约人隶属部门">
-      </el-table-column> -->
       <el-table-column
         prop="roomName"
         header-align="center"
@@ -115,48 +93,6 @@
         label="设备"
       >
       </el-table-column>
-      <!-- <el-table-column
-        prop="userNum"
-        header-align="center"
-        align="center"
-        label="参会人数">
-      </el-table-column>
-      <el-table-column
-        prop="users"
-        header-align="center"
-        align="center"
-        label="参会人员">
-      </el-table-column>
-      <el-table-column
-        prop="meetingTheme"
-        header-align="center"
-        align="center"
-        label="会议主题">
-      </el-table-column>
-      <el-table-column
-        prop="remark"
-        header-align="center"
-        align="center"
-        label="备注">
-      </el-table-column>
-      <el-table-column
-        prop="status"
-        header-align="center"
-        align="center"
-        label="预约状态">
-      </el-table-column> -->
-      <!-- <el-table-column
-        prop="data1"
-        header-align="center"
-        align="center"
-        label="预留字段1">
-      </el-table-column>
-      <el-table-column
-        prop="data2"
-        header-align="center"
-        align="center"
-        label="预留字段2">
-      </el-table-column> -->
       <el-table-column
         fixed="right"
         header-align="center"

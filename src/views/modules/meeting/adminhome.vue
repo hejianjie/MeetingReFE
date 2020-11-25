@@ -1,6 +1,8 @@
 <template>
   <div>
-    <el-row>
+    <el-row
+      v-loading="dataListLoading"
+      element-loading-text="拼命加载中">
       <el-col :span="16">
         <el-date-picker
           v-model="datevalue"
@@ -10,6 +12,7 @@
           value-format="yyyy-MM-dd">
         </el-date-picker>
         <el-table
+          
           class="customer-table"
           :data="tableData"
           :cell-style="cellStyle"
@@ -157,8 +160,8 @@ export default {
         } else {
           this.$message.error(data.msg);
         }
+        this.dataListLoading = false;
       });
-      this.dataListLoading = false;
     },
     // 单元格的 style 的回调方法
     cellStyle({ row, column, rowIndex, columnIndex }) {
@@ -226,7 +229,7 @@ export default {
       room: [],
       roomsize: "",
       form: {},
-      dataListLoading: true,
+      dataListLoading: false,
       formcache: {},
       datevalue: "",
       timestart: "",
