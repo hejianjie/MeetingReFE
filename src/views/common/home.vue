@@ -59,6 +59,11 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-col :span="13">
+        <el-card shadow="hover">
+          上方单元格内的数字表示该会议室的可容纳人数，图标表示该会议室是否拥有设备。
+        </el-card>
+        </el-col>
       </el-col>
       <el-col :span="8">
         <el-form ref="form" :rules="rules" :model="form" label-width="80px">
@@ -149,8 +154,7 @@
               <span
                 v-text="
                   '\u3000所选会议室可容纳\u3000' + this.roomsize + '\u3000人'
-                "
-              >
+                ">
               </span>
             </el-col>
           </el-form-item>
@@ -382,6 +386,7 @@ export default {
       this.roomsign = "";
       this.bechosed = false;
       this.form.equipment = [];
+      this.location = "";
     },
     reset() {
       this.formcache = {

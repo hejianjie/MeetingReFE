@@ -20,6 +20,7 @@
       </el-form-item>
       <el-form-item>
         <el-input
+          style="width: 240px;"
           v-model="dataForm.key"
           placeholder="请输入预约人或会议室名称"
           clearable

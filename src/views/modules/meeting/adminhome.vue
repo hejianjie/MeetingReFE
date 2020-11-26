@@ -11,8 +11,7 @@
           placeholder="选择日期"
           value-format="yyyy-MM-dd">
         </el-date-picker>
-        <el-table
-          
+        <el-table          
           class="customer-table"
           :data="tableData"
           :cell-style="cellStyle"
@@ -99,6 +98,11 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-col :span="13">
+        <el-card shadow="hover">
+          上方单元格内的数字表示该会议室的可容纳人数，图标表示该会议室是否拥有设备。
+        </el-card>
+        </el-col>
       </el-col>
     </el-row>
   </div>
