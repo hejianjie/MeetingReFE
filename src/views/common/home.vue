@@ -60,9 +60,9 @@
           </el-table-column>
         </el-table>
         <el-col :span="13">
-        <el-card shadow="hover">
-          上方单元格内的数字表示该会议室的可容纳人数，图标表示该会议室是否拥有设备。
-        </el-card>
+          <el-card shadow="hover">
+            上方单元格内的数字表示该会议室的可容纳人数，图标表示该会议室是否拥有设备。
+          </el-card>
         </el-col>
       </el-col>
       <el-col :span="8">
@@ -119,7 +119,7 @@
               <el-input v-model="form.datechoose" readonly></el-input>
             </el-col>
           </el-form-item>
-          <el-form-item label="活动时间" style="margin:0">
+          <el-form-item label="活动时间" style="margin: 0">
             <el-col :span="11">
               <el-input
                 readonly
@@ -154,13 +154,14 @@
               <span
                 v-text="
                   '\u3000所选会议室可容纳\u3000' + this.roomsize + '\u3000人'
-                ">
+                "
+              >
               </span>
             </el-col>
           </el-form-item>
-          <!-- <el-form-item label="参会人员" prop="leader">
+          <el-form-item label="参会人员">
             <el-input v-model="form.leader"></el-input>
-          </el-form-item> -->
+          </el-form-item>
 
           <el-form-item label="会议用途" prop="theme">
             <el-checkbox-group v-model="form.theme" @change="selectedChange">
@@ -294,6 +295,7 @@ export default {
             date2: null,
             room: null,
             equipment: [],
+            leader: "",
           };
           this.form = this.formcache;
         } else {
@@ -321,7 +323,7 @@ export default {
               // department: this.form.department,
               department: "开发区校区",
               from: this.form.belong,
-              leader: "",
+              leader: this.form.leader,
               equipment: this.form.equipment,
               mobile: this.form.mobile,
               name: this.form.name,
@@ -401,6 +403,7 @@ export default {
         room: null,
         equipment: [],
         sum: "",
+        leader: "",
       };
       this.form = this.formcache;
       this.roomsize = "";

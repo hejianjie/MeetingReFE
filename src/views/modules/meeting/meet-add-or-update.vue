@@ -47,9 +47,9 @@
       <el-form-item label="参会人数" prop="userNum">
         <el-input v-model="dataForm.userNum" readonly></el-input>
       </el-form-item>
-      <!-- <el-form-item label="参会人员" prop="users">
+      <el-form-item label="参会人员" prop="users">
         <el-input v-model="dataForm.users" readonly></el-input>
-      </el-form-item> -->
+      </el-form-item>
       <el-form-item label="会议主题" prop="meetingTheme">
         <el-input v-model="dataForm.meetingTheme" readonly></el-input>
       </el-form-item>
