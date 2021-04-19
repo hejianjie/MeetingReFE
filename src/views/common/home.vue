@@ -20,6 +20,7 @@
           :cell-style="cellStyle"
           border
           @cell-click="clickhandle"
+          @cell-mouse-enter="enterhandle"
           style="width: 95%"
         >
           <el-table-column prop="date" min-width="110"> </el-table-column>
@@ -31,31 +32,80 @@
             width="100"
           >
             <template slot-scope="scope">
-              <el-button
-                type="text"
-                style="
-                  float: left;
-                  font-size: 18px;
-                  margin-left: 10%;
-                  color: black;
-                  line-height: 25px;
-                "
-                >{{ item.capacity }}</el-button
-              >
-              <el-button
-                type="text"
-                :class="
-                  item.equipment != '无'
-                    ? 'iconfont icon-shexiangtou'
-                    : 'iconfont icon-shexiangtou_guanbi'
-                "
-                style="
-                  float: right;
-                  font-size: 25px;
-                  margin-right: 10%;
-                  color: black;
-                "
-              ></el-button>
+              <el-popover v-if="visible" transition="el-zoom-in-center"	trigger="hover" placement="left">
+                <el-form ref="form" :model="details" label-width="100px">
+                  <el-form-item label="预约人">
+                    <el-input v-model="details.roomUser" readonly></el-input>
+                  </el-form-item>
+                  <el-form-item label="联系方式">
+                    <el-input v-model="details.userPhone" readonly></el-input>
+                  </el-form-item>                 
+                </el-form>
+                <div slot="reference">
+                  <el-button
+                  type="text"
+                  style="
+                    float: left;
+                    font-size: 18px;
+                    margin-left: 10%;
+                    color: black;
+                    line-height: 25px;
+                  "
+                  >{{ item.capacity }}</el-button
+                  >
+                  <el-button
+                    type="text"
+                    :class="
+                      item.equipment != '无'
+                        ? 'iconfont icon-shexiangtou'
+                        : 'iconfont icon-shexiangtou_guanbi'
+                    "
+                    style="
+                      float: right;
+                      font-size: 25px;
+                      margin-right: 10%;
+                      color: black;
+                    "
+                  ></el-button>
+                </div>
+              </el-popover> 
+              <el-popover v-else transition="el-zoom-in-center"	trigger="hover" placement="left" disabled>
+                <el-form ref="form" :model="details" label-width="100px">
+                  <el-form-item label="预约人">
+                    <el-input v-model="details.roomUser" readonly></el-input>
+                  </el-form-item>
+                  <el-form-item label="联系方式">
+                    <el-input v-model="details.userPhone" readonly></el-input>
+                  </el-form-item>                 
+                </el-form>
+                <div slot="reference">
+                  <el-button
+                  type="text"
+                  style="
+                    float: left;
+                    font-size: 18px;
+                    margin-left: 10%;
+                    color: black;
+                    line-height: 25px;
+                  "
+                  >{{ item.capacity }}</el-button
+                  >
+                  <el-button
+                    type="text"
+                    :class="
+                      item.equipment != '无'
+                        ? 'iconfont icon-shexiangtou'
+                        : 'iconfont icon-shexiangtou_guanbi'
+                    "
+                    style="
+                      float: right;
+                      font-size: 25px;
+                      margin-right: 10%;
+                      color: black;
+                    "
+                  ></el-button>
+                </div>
+              </el-popover>
             </template>
           </el-table-column>
         </el-table>
@@ -209,6 +259,28 @@ export default {
     //     }
     //   }
     // },
+    enterhandle(row, column, event, cell) {
+      // 获取选择的会议室
+      // let chooseroom;
+      // for (let i = 0; i < this.room.length; i++)
+      //   if (this.room[i].roomName == column.label) chooseroom = this.room[i];
+      
+      this.details = {};
+      if (typeof row[column.label]["id"] != "undefined") {
+        this.details = {
+          roomUser: row[column.label].roomUser,
+          userPhone: row[column.label].userPhone,     
+        };
+      } else {
+        this.visible = false;
+      }
+      if(JSON.stringify(this.details) == "{}") {
+        this.visible = false;
+      }
+      else {
+        this.visible = true;
+      }
+    },
     getNowTime() {
       var now = new Date();
       let hourchecksign = this.datevalue;
@@ -427,6 +499,9 @@ export default {
         }
       } catch (error) {}
 
+      // if (columnIndex != 0)
+      //   return "border-radius: 8px;background-color:#FFFFFF;padding:0;pointer-events: none";
+
       //点击选择
       if (columnIndex != 0 && this.timesign == true) {
         if (
@@ -565,7 +640,8 @@ export default {
       now_user: {},
       eqList: [],
       roomsize: "",
-      // details: {},
+      details: {},
+      visible: false,
       form: {},
       formcache: {},
       datevalue: "",
