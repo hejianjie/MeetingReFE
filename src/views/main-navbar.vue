@@ -131,13 +131,13 @@ export default {
   },
   methods: {
     jumpHomepage() {
-      this.$router.push({ name: "meeting-meet" });
+      // this.$router.push({ name: "meeting-meet" });
       // console.log(this.$cookie.get('username'))
-      // if(this.$cookie.get('username')=='root') {
-      //   this.$router.push({ name: 'ahome' })
-      // }else{
-      //   this.$router.push({ name: 'home' })
-      // }
+      if(this.$cookie.get('username')=='root') {
+        this.$router.push({ name: 'meeting-adminhome' })
+      }else{
+        this.$router.push({ name: 'home' })
+      }
     },
     // 修改密码
     updatePasswordHandle() {
