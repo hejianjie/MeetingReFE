@@ -2,72 +2,120 @@
   <div>
     <el-row
       v-loading="dataListLoading"
-      element-loading-text="拼命加载中">
+      element-loading-text="拼命加载中"
+    >
       <el-col :span="16">
         <el-date-picker
           v-model="datevalue"
           type="date"
           @change="getTanleMsg"
           placeholder="选择日期"
-          value-format="yyyy-MM-dd">
+          value-format="yyyy-MM-dd"
+        >
         </el-date-picker>
-        <el-table          
+        <el-table
           class="customer-table"
           :data="tableData"
           :cell-style="cellStyle"
           border
           @cell-mouse-enter="clickhandle"
-          style="width: 95%">
-          <el-table-column prop="date" min-width="110"> </el-table-column>
+          style="width: 95%"
+        >
+          <el-table-column
+            prop="date"
+            min-width="110"
+          > </el-table-column>
           <el-table-column
             v-for="(item, index) in room"
             :prop="item.roomName"
             :key="index"
             :label="item.roomName"
-            width="100">
+            width="100"
+          >
             <!-- 预约详情弹出框 -->
             <template slot-scope="scope">
-              <el-popover transition="el-zoom-in-center"	 trigger="hover" placement="left">
-                <el-form ref="form" :model="details" label-width="100px">
+              <el-popover
+                transition="el-zoom-in-center"
+                trigger="hover"
+                placement="left"
+              >
+                <el-form
+                  ref="form"
+                  :model="details"
+                  label-width="100px"
+                >
                   <el-form-item label="使用单位">
-                    <el-input v-model="details.department" readonly></el-input>
+                    <el-input
+                      v-model="details.department"
+                      readonly
+                    ></el-input>
                   </el-form-item>
                   <el-form-item label="预约人">
-                    <el-input v-model="details.roomUser" readonly></el-input>
+                    <el-input
+                      v-model="details.roomUser"
+                      readonly
+                    ></el-input>
                   </el-form-item>
                   <el-form-item label="隶属部门">
-                    <el-input v-model="details.userFrom" readonly></el-input>
+                    <el-input
+                      v-model="details.userFrom"
+                      readonly
+                    ></el-input>
                   </el-form-item>
                   <el-form-item label="会议室名称">
-                    <el-input v-model="details.roomName" readonly></el-input>
+                    <el-input
+                      v-model="details.roomName"
+                      readonly
+                    ></el-input>
                   </el-form-item>
                   <el-form-item label="设备">
-                    <el-input v-model="details.equipment" readonly></el-input>
+                    <el-input
+                      v-model="details.equipment"
+                      readonly
+                    ></el-input>
                   </el-form-item>
                   <el-form-item label="联系方式">
-                    <el-input v-model="details.userPhone" readonly></el-input>
+                    <el-input
+                      v-model="details.userPhone"
+                      readonly
+                    ></el-input>
                   </el-form-item>
                   <el-form-item label="参会人数">
-                    <el-input v-model="details.userNum" readonly></el-input>
-                  </el-form-item>               
+                    <el-input
+                      v-model="details.userNum"
+                      readonly
+                    ></el-input>
+                  </el-form-item>
                   <el-form-item label="会议主题">
-                    <el-input v-model="details.meetingTheme" readonly></el-input>
+                    <el-input
+                      v-model="details.meetingTheme"
+                      readonly
+                    ></el-input>
                   </el-form-item>
                   <el-form-item label="会议时间">
-                    <el-input v-model="details.time" readonly></el-input>
+                    <el-input
+                      v-model="details.time"
+                      readonly
+                    ></el-input>
                   </el-form-item>
                   <el-form-item label="备注">
                     <template>
                       <el-form-item v-if="details.remark==null">
-                        <el-input value="无" readonly></el-input>
+                        <el-input
+                          value="无"
+                          readonly
+                        ></el-input>
                       </el-form-item>
                       <el-form-item v-else>
-                        <el-input v-model="details.remark" readonly></el-input>
+                        <el-input
+                          v-model="details.remark"
+                          readonly
+                        ></el-input>
                       </el-form-item>
                     </template>
                   </el-form-item>
                 </el-form>
-                <div   slot="reference">
+                <div slot="reference">
                   <el-button
                     type="text"
                     style="
@@ -77,8 +125,7 @@
                       color: black;
                       line-height: 25px;
                     "
-                    >{{ item.capacity }}</el-button
-                  >
+                  >{{ item.capacity }}</el-button>
                   <el-button
                     type="text"
                     :class="
@@ -99,9 +146,9 @@
           </el-table-column>
         </el-table>
         <el-col :span="13">
-        <el-card shadow="hover">
-          上方单元格内的数字表示该会议室的可容纳人数，图标表示该会议室是否拥有设备。
-        </el-card>
+          <el-card shadow="hover">
+            上方单元格内的数字表示该会议室的可容纳人数，图标表示该会议室是否拥有设备。
+          </el-card>
         </el-col>
       </el-col>
     </el-row>
@@ -167,7 +214,7 @@ export default {
     // 单元格的 style 的回调方法
     cellStyle({ row, column, rowIndex, columnIndex }) {
       //初始渲染已选择
-       try {
+      try {
         if (typeof row[column.label]["id"] != "undefined") {
           if (row[column.label]["startTime"] === row["date"].split(":")[0])
             return "border-radius: 8px;background-color:#D3D3D3;color:white;padding:0;border-top: 2px solid #475364";
@@ -185,7 +232,7 @@ export default {
         return "border-radius: 8px;background-color:#FFFFFF;padding:0;pointer-events: none";
     },
     // close () {
-      
+
     //   this.details = {};
     // },
     clickhandle(row, column, event, cell) {
@@ -193,7 +240,7 @@ export default {
       // let chooseroom;
       // for (let i = 0; i < this.room.length; i++)
       //   if (this.room[i].roomName == column.label) chooseroom = this.room[i];
-      
+
       this.details = {};
       if (typeof row[column.label]["id"] != "undefined") {
         this.details = {
@@ -207,12 +254,16 @@ export default {
           meetingTheme: row[column.label].meetingTheme,
           users: row[column.label].users,
           remark: row[column.label].remark,
-          time: row[column.label].startTime + ":00-" + row[column.label].endTime + ":00",       
+          time:
+            row[column.label].startTime +
+            ":00-" +
+            row[column.label].endTime +
+            ":00",
         };
       } else {
         this.visible = false;
       }
-    }
+    },
   },
 
   data() {
@@ -236,13 +287,13 @@ export default {
       timestart: "",
       datasign: [],
       choosetable: {},
-      details: {},//获取详情信息
+      details: {}, //获取详情信息
       timesign: false, //第几次点击
       timestart: "",
       timeend: "",
       roomsign: "", //标记点击选择的会议室
       bechosed: false,
-      visible: false,//详情弹出框是否显示
+      visible: false, //详情弹出框是否显示
       rules: {
         room: [{ required: true, message: "请填写会议室", trigger: "change" }],
         sum: [{ validator: validateSum, trigger: "blur" }],

@@ -46,23 +46,25 @@
                 class="login-btn-submit"
                 type="primary"
                 @click="dataFormSubmit()"
-                >登录</el-button
-              >
+              >登录</el-button>
             </el-form-item>
-            <el-form-item style="margin: 0">
+            <!-- <el-form-item style="margin: 0">
               <el-button
                 style="margin-top: 0"
                 class="login-btn-submit"
                 @click="addOrUpdateHandle()"
                 >注册</el-button
               >
-            </el-form-item>
+            </el-form-item> -->
           </el-form>
         </div>
       </div>
     </div>
     <!-- 弹窗, 新增 / 修改 -->
-    <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate"></add-or-update>
+    <add-or-update
+      v-if="addOrUpdateVisible"
+      ref="addOrUpdate"
+    ></add-or-update>
   </div>
 </template>
 
@@ -122,8 +124,14 @@ export default {
           }).then(({ data }) => {
             if (data && data.code === 0) {
               this.$cookie.set("token", data.token);
-              this.$cookie.set('username', this.dataForm.userName);
-              this.$router.replace({ name: "meeting-meet" });
+              this.$cookie.set("username", this.dataForm.userName);
+              if (this.$cookie.get("username") == "root") {
+                console.log("管理员登录");
+                this.$router.replace({ name: "meeting-adminhome" });
+              } else {
+                console.log("普通用户登录");
+                this.$router.replace({ name: "home" });
+              }
             } else {
               this.$message.error(data.msg);
             }
