@@ -18,6 +18,7 @@
           class="customer-table"
           :data="tableData"
           :cell-style="cellStyle"
+          :cell-class-name="cellClass"
           border
           @cell-click="clickhandle"
           style="width: 95%"
@@ -27,11 +28,16 @@
             v-for="(item, index) in room"
             :prop="item.roomName"
             :key="index"
-            :label="item.roomName"
+            :label="item.roomName + '(容纳' + item.capacity + '人)'"
             width="100"
           >
             <template slot-scope="scope">
-              <el-button
+              {{
+                tableData[scope.$index][item.roomName].status == null
+                  ? "空闲"
+                  : "占用"
+              }}
+              <!-- <el-button
                 type="text"
                 style="
                   float: left;
@@ -55,7 +61,7 @@
                   margin-right: 10%;
                   color: black;
                 "
-              ></el-button>
+              ></el-button> -->
             </template>
           </el-table-column>
         </el-table>
@@ -204,7 +210,7 @@ export default {
     // getDetails(row, column, cell, event) {
     //   this.details = {};
     //   for (let i = 0; i < this.room.length; i++) {
-    //     if (this.room[i].roomName == column.label) {
+    //     if (this.room[i].roomName == column.label.split('(')[0]) {
     //       this.details = this.room[i];
     //     }
     //   }
@@ -410,15 +416,22 @@ export default {
       this.resetchose();
       // this.$router.go(0);
     },
+    // 单元格的 class 的回调方法
+    cellClass({ row, column, rowIndex, columnIndex }) {
+      return "celltextcenter";
+    },
     // 单元格的 style 的回调方法
     cellStyle({ row, column, rowIndex, columnIndex }) {
       //初始渲染已选择
       try {
-        if (typeof row[column.label]["id"] != "undefined") {
-          if (row[column.label]["startTime"] === row["date"].split(":")[0])
+        if (typeof row[column.label.split("(")[0]]["id"] != "undefined") {
+          if (
+            row[column.label.split("(")[0]]["startTime"] ===
+            row["date"].split(":")[0]
+          )
             return "border-radius: 8px;background-color:#D3D3D3;color:white;padding:0;border-top: 2px solid #475364";
           else if (
-            row[column.label]["endTime"] ===
+            row[column.label.split("(")[0]]["endTime"] ===
             row["date"].split(":")[1].split("-")[1]
           )
             return "border-radius: 8px;background-color:#D3D3D3;color:white;padding:0;border-bottom: 2px solid #475364";
@@ -431,7 +444,7 @@ export default {
       if (columnIndex != 0 && this.timesign == true) {
         if (
           this.timeend != "" &&
-          column.label == this.roomsign &&
+          column.label.split("(")[0] == this.roomsign &&
           rowIndex >= Number(this.timestart - 7) &&
           rowIndex <= Number(this.timeend - 8) &&
           this.bechosed == true
@@ -441,7 +454,7 @@ export default {
         }
 
         if (
-          column.label == this.roomsign &&
+          column.label.split("(")[0] == this.roomsign &&
           rowIndex == Number(this.timestart - 7)
         ) {
           //单选
@@ -457,16 +470,18 @@ export default {
       if (column.property != "date") {
         let a = row.date.split("-");
         // console.log("点击事件");
-        // console.log(row[column.label]);
+        // console.log(row[column.label.split('(')[0]]);
         console.log("行");
         console.log(row);
         console.log("列");
         console.log(column);
 
+        console.log(column.label.split("(")[0]);
         // 获取选择的会议室
         let chooseroom;
         for (let i = 0; i < this.room.length; i++)
-          if (this.room[i].roomName == column.label) chooseroom = this.room[i];
+          if (this.room[i].roomName == column.label.split("(")[0])
+            chooseroom = this.room[i];
 
         // 获取选择的会议室人数判断上限
         this.roomsize = chooseroom.capacity;
@@ -474,25 +489,25 @@ export default {
 
         if (this.timesign == false) {
           //第一次点击
-          console.log("row[column.label]");
-          console.log(row[column.label]);
-          if (typeof row[column.label]["id"] != "undefined") {
+          console.log("row[column.label.split('(')[0]]");
+          console.log(row[column.label.split("(")[0]]);
+          if (typeof row[column.label.split("(")[0]]["id"] != "undefined") {
             this.$message.error("当前时间段已被预约");
             this.resetchose();
           } else if (Number(row.date.split(":")[0]) <= Number(this.hourvalue)) {
             this.$message.error("当前时间段已过，无法预约");
             this.resetchose();
           } else {
-            this.form.room = column.label;
+            this.form.room = column.label.split("(")[0];
 
-            let eq = row[column.label]["equipment"];
+            let eq = row[column.label.split("(")[0]]["equipment"];
             if (eq != "无") {
               this.form.equipment = eq.split(",");
             } else {
               this.form.equipment = [];
             }
 
-            this.roomsign = column.label;
+            this.roomsign = column.label.split("(")[0];
             this.form.date1 = a[0];
             this.timestart = a[0].split(":")[0];
             this.timeend = "";
@@ -501,7 +516,7 @@ export default {
           }
         } else {
           //第二次点击
-          if (this.form.room == column.label) {
+          if (this.form.room == column.label.split("(")[0]) {
             //仍选择该会议室
             let tstart = Number(this.timestart);
             let tend = Number(a[0].split(":")[0]);
@@ -509,7 +524,9 @@ export default {
             //判断选择时间段内部有无已选
             for (let i = tstart; i <= tend; i++) {
               if (
-                typeof this.tableData[i - 7][column.label]["id"] != "undefined"
+                typeof this.tableData[i - 7][column.label.split("(")[0]][
+                  "id"
+                ] != "undefined"
               ) {
                 this.$message.error("当前时间段已有被预约时间段");
                 this.resetchose();
@@ -627,5 +644,9 @@ input::-webkit-inner-spin-button {
 }
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+.celltextcenter {
+  text-align: center;
 }
 </style>

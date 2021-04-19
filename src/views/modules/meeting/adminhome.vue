@@ -1,33 +1,39 @@
 <template>
   <div>
-    <el-row
-      v-loading="dataListLoading"
-      element-loading-text="拼命加载中">
+    <el-row v-loading="dataListLoading" element-loading-text="拼命加载中">
       <el-col :span="16">
         <el-date-picker
           v-model="datevalue"
           type="date"
           @change="getTanleMsg"
           placeholder="选择日期"
-          value-format="yyyy-MM-dd">
+          value-format="yyyy-MM-dd"
+        >
         </el-date-picker>
-        <el-table          
+        <el-table
           class="customer-table"
           :data="tableData"
           :cell-style="cellStyle"
+          :cell-class-name="cellClass"
           border
           @cell-mouse-enter="clickhandle"
-          style="width: 95%">
+          style="width: 95%"
+        >
           <el-table-column prop="date" min-width="110"> </el-table-column>
           <el-table-column
             v-for="(item, index) in room"
             :prop="item.roomName"
             :key="index"
-            :label="item.roomName"
-            width="100">
+            :label="item.roomName + '(容纳' + item.capacity + '人)'"
+            width="100"
+          >
             <!-- 预约详情弹出框 -->
             <template slot-scope="scope">
-              <el-popover transition="el-zoom-in-center"	 trigger="hover" placement="left">
+              <el-popover
+                transition="el-zoom-in-center"
+                trigger="hover"
+                placement="left"
+              >
                 <el-form ref="form" :model="details" label-width="100px">
                   <el-form-item label="使用单位">
                     <el-input v-model="details.department" readonly></el-input>
@@ -49,16 +55,19 @@
                   </el-form-item>
                   <el-form-item label="参会人数">
                     <el-input v-model="details.userNum" readonly></el-input>
-                  </el-form-item>               
+                  </el-form-item>
                   <el-form-item label="会议主题">
-                    <el-input v-model="details.meetingTheme" readonly></el-input>
+                    <el-input
+                      v-model="details.meetingTheme"
+                      readonly
+                    ></el-input>
                   </el-form-item>
                   <el-form-item label="会议时间">
                     <el-input v-model="details.time" readonly></el-input>
                   </el-form-item>
                   <el-form-item label="备注">
                     <template>
-                      <el-form-item v-if="details.remark==null">
+                      <el-form-item v-if="details.remark == null">
                         <el-input value="无" readonly></el-input>
                       </el-form-item>
                       <el-form-item v-else>
@@ -67,41 +76,21 @@
                     </template>
                   </el-form-item>
                 </el-form>
-                <div   slot="reference">
-                  <el-button
-                    type="text"
-                    style="
-                      float: left;
-                      font-size: 18px;
-                      margin-left: 10%;
-                      color: black;
-                      line-height: 25px;
-                    "
-                    >{{ item.capacity }}</el-button
-                  >
-                  <el-button
-                    type="text"
-                    :class="
-                      item.equipment != '无'
-                        ? 'iconfont icon-shexiangtou'
-                        : 'iconfont icon-shexiangtou_guanbi'
-                    "
-                    style="
-                      float: right;
-                      font-size: 25px;
-                      margin-right: 10%;
-                      color: black;
-                    "
-                  ></el-button>
+                <div slot="reference">
+                  {{
+                    tableData[scope.$index][item.roomName].status == null
+                      ? "空闲"
+                      : "占用"
+                  }}
                 </div>
               </el-popover>
             </template>
           </el-table-column>
         </el-table>
         <el-col :span="13">
-        <el-card shadow="hover">
-          上方单元格内的数字表示该会议室的可容纳人数，图标表示该会议室是否拥有设备。
-        </el-card>
+          <el-card shadow="hover">
+            上方单元格内的数字表示该会议室的可容纳人数，图标表示该会议室是否拥有设备。
+          </el-card>
         </el-col>
       </el-col>
     </el-row>
@@ -164,15 +153,18 @@ export default {
         this.dataListLoading = false;
       });
     },
+    cellClass({ row, column, rowIndex, columnIndex }) {
+      return "celltextcenter";
+    },
     // 单元格的 style 的回调方法
     cellStyle({ row, column, rowIndex, columnIndex }) {
       //初始渲染已选择
-       try {
-        if (typeof row[column.label]["id"] != "undefined") {
-          if (row[column.label]["startTime"] === row["date"].split(":")[0])
+      try {
+        if (typeof row[column.label.split('(')[0]]["id"] != "undefined") {
+          if (row[column.label.split('(')[0]]["startTime"] === row["date"].split(":")[0])
             return "border-radius: 8px;background-color:#D3D3D3;color:white;padding:0;border-top: 2px solid #475364";
           else if (
-            row[column.label]["endTime"] ===
+            row[column.label.split('(')[0]]["endTime"] ===
             row["date"].split(":")[1].split("-")[1]
           )
             return "border-radius: 8px;background-color:#D3D3D3;color:white;padding:0;border-bottom: 2px solid #475364";
@@ -185,34 +177,38 @@ export default {
         return "border-radius: 8px;background-color:#FFFFFF;padding:0;pointer-events: none";
     },
     // close () {
-      
+
     //   this.details = {};
     // },
     clickhandle(row, column, event, cell) {
       // 获取选择的会议室
       // let chooseroom;
       // for (let i = 0; i < this.room.length; i++)
-      //   if (this.room[i].roomName == column.label) chooseroom = this.room[i];
-      
+      //   if (this.room[i].roomName == column.label.split('(')[0]) chooseroom = this.room[i];
+
       this.details = {};
-      if (typeof row[column.label]["id"] != "undefined") {
+      if (typeof row[column.label.split('(')[0]]["id"] != "undefined") {
         this.details = {
-          department: row[column.label].department,
-          roomUser: row[column.label].roomUser,
-          userNum: row[column.label].userNum,
-          userFrom: row[column.label].userFrom,
-          roomName: row[column.label].roomName,
-          equipment: row[column.label].equipment,
-          userPhone: row[column.label].userPhone,
-          meetingTheme: row[column.label].meetingTheme,
-          users: row[column.label].users,
-          remark: row[column.label].remark,
-          time: row[column.label].startTime + ":00-" + row[column.label].endTime + ":00",       
+          department: row[column.label.split('(')[0]].department,
+          roomUser: row[column.label.split('(')[0]].roomUser,
+          userNum: row[column.label.split('(')[0]].userNum,
+          userFrom: row[column.label.split('(')[0]].userFrom,
+          roomName: row[column.label.split('(')[0]].roomName,
+          equipment: row[column.label.split('(')[0]].equipment,
+          userPhone: row[column.label.split('(')[0]].userPhone,
+          meetingTheme: row[column.label.split('(')[0]].meetingTheme,
+          users: row[column.label.split('(')[0]].users,
+          remark: row[column.label.split('(')[0]].remark,
+          time:
+            row[column.label.split('(')[0]].startTime +
+            ":00-" +
+            row[column.label.split('(')[0]].endTime +
+            ":00",
         };
       } else {
         this.visible = false;
       }
-    }
+    },
   },
 
   data() {
@@ -236,13 +232,13 @@ export default {
       timestart: "",
       datasign: [],
       choosetable: {},
-      details: {},//获取详情信息
+      details: {}, //获取详情信息
       timesign: false, //第几次点击
       timestart: "",
       timeend: "",
       roomsign: "", //标记点击选择的会议室
       bechosed: false,
-      visible: false,//详情弹出框是否显示
+      visible: false, //详情弹出框是否显示
       rules: {
         room: [{ required: true, message: "请填写会议室", trigger: "change" }],
         sum: [{ validator: validateSum, trigger: "blur" }],
@@ -296,5 +292,8 @@ input::-webkit-inner-spin-button {
 }
 input[type="number"] {
   -moz-appearance: textfield;
+}
+.celltextcenter {
+  text-align: center;
 }
 </style>
