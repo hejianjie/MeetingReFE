@@ -1,6 +1,8 @@
 <template>
   <div>
+
     <el-row v-loading="dataListLoading" element-loading-text="拼命加载中">
+
       <el-col :span="16">
         <el-date-picker
           v-model="datevalue"
@@ -19,12 +21,16 @@
           @cell-mouse-enter="clickhandle"
           style="width: 95%"
         >
+
           <el-table-column prop="date" min-width="110"> </el-table-column>
+
           <el-table-column
             v-for="(item, index) in room"
             :prop="item.roomName"
             :key="index"
+
             :label="item.roomName + '(容纳' + item.capacity + '人)'"
+
             width="100"
           >
             <!-- 预约详情弹出框 -->
@@ -34,27 +40,51 @@
                 trigger="hover"
                 placement="left"
               >
+
                 <el-form ref="form" :model="details" label-width="100px">
+
                   <el-form-item label="使用单位">
-                    <el-input v-model="details.department" readonly></el-input>
+                    <el-input
+                      v-model="details.department"
+                      readonly
+                    ></el-input>
                   </el-form-item>
                   <el-form-item label="预约人">
-                    <el-input v-model="details.roomUser" readonly></el-input>
+                    <el-input
+                      v-model="details.roomUser"
+                      readonly
+                    ></el-input>
                   </el-form-item>
                   <el-form-item label="隶属部门">
-                    <el-input v-model="details.userFrom" readonly></el-input>
+                    <el-input
+                      v-model="details.userFrom"
+                      readonly
+                    ></el-input>
                   </el-form-item>
                   <el-form-item label="会议室名称">
-                    <el-input v-model="details.roomName" readonly></el-input>
+                    <el-input
+                      v-model="details.roomName"
+                      readonly
+                    ></el-input>
                   </el-form-item>
                   <el-form-item label="设备">
-                    <el-input v-model="details.equipment" readonly></el-input>
+                    <el-input
+                      v-model="details.equipment"
+                      readonly
+                    ></el-input>
                   </el-form-item>
                   <el-form-item label="联系方式">
-                    <el-input v-model="details.userPhone" readonly></el-input>
+                    <el-input
+                      v-model="details.userPhone"
+                      readonly
+                    ></el-input>
                   </el-form-item>
                   <el-form-item label="参会人数">
-                    <el-input v-model="details.userNum" readonly></el-input>
+                    <el-input
+                      v-model="details.userNum"
+                      readonly
+                    ></el-input>
+
                   </el-form-item>
                   <el-form-item label="会议主题">
                     <el-input
@@ -63,34 +93,46 @@
                     ></el-input>
                   </el-form-item>
                   <el-form-item label="会议时间">
-                    <el-input v-model="details.time" readonly></el-input>
+                    <el-input
+                      v-model="details.time"
+                      readonly
+                    ></el-input>
                   </el-form-item>
                   <el-form-item label="备注">
                     <template>
-                      <el-form-item v-if="details.remark == null">
-                        <el-input value="无" readonly></el-input>
+
+                      <el-form-item v-if="details.remark==null">
+                        <el-input
+                          value="无"
+                          readonly
+                        ></el-input>
                       </el-form-item>
                       <el-form-item v-else>
-                        <el-input v-model="details.remark" readonly></el-input>
+                        <el-input
+                          v-model="details.remark"
+                          readonly
+                        ></el-input>
                       </el-form-item>
                     </template>
                   </el-form-item>
                 </el-form>
                 <div slot="reference">
+
                   {{
                     tableData[scope.$index][item.roomName].status == null
                       ? "空闲"
                       : "占用"
                   }}
+
                 </div>
               </el-popover>
             </template>
           </el-table-column>
         </el-table>
         <el-col :span="13">
-          <el-card shadow="hover">
+          <!-- <el-card shadow="hover">
             上方单元格内的数字表示该会议室的可容纳人数，图标表示该会议室是否拥有设备。
-          </el-card>
+          </el-card> -->
         </el-col>
       </el-col>
     </el-row>
@@ -160,8 +202,10 @@ export default {
     cellStyle({ row, column, rowIndex, columnIndex }) {
       //初始渲染已选择
       try {
+
         if (typeof row[column.label.split('(')[0]]["id"] != "undefined") {
           if (row[column.label.split('(')[0]]["startTime"] === row["date"].split(":")[0])
+
             return "border-radius: 8px;background-color:#D3D3D3;color:white;padding:0;border-top: 2px solid #475364";
           else if (
             row[column.label.split('(')[0]]["endTime"] ===
@@ -184,11 +228,13 @@ export default {
       // 获取选择的会议室
       // let chooseroom;
       // for (let i = 0; i < this.room.length; i++)
+
       //   if (this.room[i].roomName == column.label.split('(')[0]) chooseroom = this.room[i];
 
       this.details = {};
       if (typeof row[column.label.split('(')[0]]["id"] != "undefined") {
         this.details = {
+
           department: row[column.label.split('(')[0]].department,
           roomUser: row[column.label.split('(')[0]].roomUser,
           userNum: row[column.label.split('(')[0]].userNum,
@@ -203,6 +249,7 @@ export default {
             row[column.label.split('(')[0]].startTime +
             ":00-" +
             row[column.label.split('(')[0]].endTime +
+
             ":00",
         };
       } else {
