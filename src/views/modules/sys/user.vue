@@ -208,9 +208,17 @@ export default {
     this.getDataList();
   },
   methods: {
-    handleAvatarSuccess() {
-      console.log(555555);
-      alert("导入文件成功！");
+    handleAvatarSuccess(res) {
+      console.log(res);
+      if (res.code != 0) 
+      this.$message.error(res.msg);
+      else
+        this.$message({
+          message: "操作成功",
+          type: "success",
+          duration: 1500,
+        });
+
       this.getDataList();
       this.$refs["upload"].clearFiles();
     },
@@ -221,6 +229,7 @@ export default {
       );
     },
     uploadSuccess(response, file, fileList) {
+      console.log(response);
       if (response.status) {
         alert("文件导入成功");
       } else {
