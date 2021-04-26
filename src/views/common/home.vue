@@ -34,7 +34,7 @@
           >
             <template slot-scope="scope">
               <el-popover v-if="visible" transition="el-zoom-in-center"	trigger="hover" placement="left">
-                <el-form ref="form" :model="details" label-width="100px">
+                <el-form  :model="details" label-width="100px">
                   <el-form-item label="预约人">
                     <el-input v-model="details.roomUser" readonly></el-input>
                   </el-form-item>
@@ -51,7 +51,7 @@
                 </div>
               </el-popover> 
               <el-popover v-else transition="el-zoom-in-center"	trigger="hover" placement="left" disabled>
-                <el-form ref="form" :model="details" label-width="100px">
+                <el-form  :model="details" label-width="100px">
                   <el-form-item label="预约人">
                     <el-input v-model="details.roomUser" readonly></el-input>
                   </el-form-item>
