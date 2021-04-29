@@ -175,9 +175,12 @@ export default {
                 if (
                   data.user.username == "admin" ||
                   data.user.username == "root"
-                )
-                  this.dataForm.roleIdList = data.user.roleIdList;
-                else this.dataForm.roleIdList = [2];
+                ){
+                  this.dataForm.roleIdList = data.user.roleIdList;               
+                }                  
+                else {
+                  this.dataForm.roleIdList = [2];
+                }
                 this.dataForm.status = data.user.status;
               }
             });
@@ -202,7 +205,7 @@ export default {
               department: this.dataForm.department,
               mobile: this.dataForm.mobile,
               status: this.dataForm.status,
-              roleIdList: this.dataForm.roleIdList,
+              roleIdList: [2],
             }),
           }).then(({ data }) => {
             if (data && data.code === 0) {
